@@ -1,0 +1,2 @@
+Add an overall cell class
+Make the click handler not remove the overall cell class
