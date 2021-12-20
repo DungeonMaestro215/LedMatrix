@@ -1,26 +1,45 @@
+html, body {
+    margin:0px;
+    height:100%;
+}
+
 #main {
     background-color: bisque;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
 }
 
 #grid-wrapper {
+    height: auto;
+    width: a;
     display: flex;
     justify-content: center;
+}
+
+#grid {
+    border: 1px black solid;
+    cursor: url('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/313/paintbrush_1f58c-fe0f.png') 0 100, auto;
 }
 
 .row {
     display: flex;
     text-align: center;
-    background-color: green;
+    background-color: white;
 }
 
 .cell {
-    width: 30px;
-    height: 30px;
+    width: 10px;
+    height: 10px;
     /* margin: 1px; */
     /* border:1px solid black; */
 }
 
-.red-cell {
+/* .red-cell {
     background-color: red;
 }
 
@@ -34,4 +53,4 @@
 
 .blue-cell:hover {
     background-color: darkblue;
-}
+} */

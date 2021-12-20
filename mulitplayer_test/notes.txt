@@ -5,3 +5,5 @@ click and drag
 Clear button
 Color picker
 Remove highlight
+
+Mix colors
