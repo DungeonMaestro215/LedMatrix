@@ -8,10 +8,15 @@ html, body {
     height: 100%;
     width: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+}
+
+.break {
+    flex-basis: 100%;
+    height: 0;
 }
 
 #grid-wrapper {
@@ -37,6 +42,14 @@ html, body {
     height: 10px;
     /* margin: 1px; */
     /* border:1px solid black; */
+}
+
+#settings-wrapper {
+    padding: 10px;
+}
+
+#slider-wrapper {
+    padding: 10px;
 }
 
 /* .red-cell {

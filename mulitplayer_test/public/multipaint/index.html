@@ -7,7 +7,7 @@
 
     <link rel="stylesheet" href="../style.css">
 
-    <title>Multiplayer</title>
+    <title>MultiPaint</title>
 </head>
 <body>
     <div id="main">
@@ -24,19 +24,24 @@
             </div>
         </div>
 
-        <label for="colorpicker1">Color:</label>
-        <input type="color" id="colorpicker1" value="#000000">
-        <label for="colorpicker2">Color:</label>
-        <input type="color" id="colorpicker2" value="#ffffff">
+        <div id="settings-wrapper">
+            <label for="colorpicker1">Color 1:</label>
+            <input type="color" id="colorpicker1" value="#000000">
+            <label for="colorpicker2">Color 2:</label>
+            <input type="color" id="colorpicker2" value="#ffffff">
+    
+            <div id="slider-wrapper">
+                <label for="brushsize">Size:</label>
+                <input type="range" id="brushsize" min="0" max="5" value="0">
+                <p><span id="brushsize-value">0</span></p>
+            </div>
+        
+            <button id="clear">Clear</button>
 
-        <div id="slider-wrapper">
-            <label for="brushsize">Size:</label>
-            <input type="range" id="brushsize" min="0" max="5" value="0">
-            <p><span id="brushsize-value"></span></p>
         </div>
         
+        
 
-        <button id="clear">Clear</button>
     </div>
 
     <script src="main.js"></script>
