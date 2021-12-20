@@ -2,26 +2,30 @@
     background-color: bisque;
 }
 
+#grid-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
 .row {
     display: flex;
     text-align: center;
     background-color: green;
 }
 
+.cell {
+    width: 30px;
+    height: 30px;
+    /* margin: 1px; */
+    /* border:1px solid black; */
+}
+
 .red-cell {
-    width: 10px;
-    height: 10px;
-    margin: 1px;
     background-color: red;
-    border:1px solid black;
 }
 
 .blue-cell {
-    width: 10px;
-    height: 10px;
-    margin: 1px;
     background-color: blue;
-    border:1px solid black;
 }
 
 .red-cell:hover {

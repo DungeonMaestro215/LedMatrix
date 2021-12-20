@@ -41,27 +41,38 @@ function setUpGrid(rows, cols) {
         // Create the cells
         for (let j=0; j<cols; j++) {
             let cell = document.createElement('div')
+            cell.classList.add('cell');
             cell.classList.add('red-cell');
 
             // Toggle cell color if clicked
-            cell.addEventListener('click', (e) => {
-                let idx = e.target.getAttribute('cell-num');
-                let data = grid_data[idx]
-
-                if (data == 0) {
-                    grid_data[idx] = 1;
-                    cell.setAttribute('class', 'blue-cell')
-                } else {
-                    grid_data[idx] = 0;
-                    cell.setAttribute('class', 'red-cell')
+            cell.addEventListener('mouseenter', (e) => {
+                if (e.buttons == 1) {
+                    colorCell(e.target);
                 }
             });
+
+            
 
             // Calculate the cell number
             let cell_num = i*cols + j
             cell.setAttribute('cell-num', cell_num);
             row.appendChild(cell);
         }
+    }
+}
+
+function colorCell(cell) {
+    let idx = cell.getAttribute('cell-num');
+    let data = grid_data[idx]
+
+    if (data == 0) {
+        grid_data[idx] = 1;
+        cell.classList.remove('red-cell');
+        cell.classList.add('blue-cell');
+    } else {
+        grid_data[idx] = 0;
+        cell.classList.remove('blue-cell');
+        cell.classList.add('red-cell');
     }
 }
 

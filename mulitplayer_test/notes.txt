@@ -1,2 +1,7 @@
 Add an overall cell class
 Make the click handler not remove the overall cell class
+
+click and drag 
+Clear button
+Color picker
+Remove highlight
