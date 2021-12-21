@@ -52,6 +52,11 @@ html, body {
     padding: 10px;
 }
 
+.cursor {
+    width: 30px;
+    transition: all ease;
+}
+
 /* .red-cell {
     background-color: red;
 }

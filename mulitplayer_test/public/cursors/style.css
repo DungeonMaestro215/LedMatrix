@@ -1,0 +1,18 @@
+body {
+    height: 100vh;
+    margin: 0;
+    background-color: aliceblue;
+    overflow: hidden;
+    /* cursor: none; */
+}
+
+img {
+    max-width: 100%;
+}
+
+.cursor {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    transition: all ease;
+}
