@@ -3,19 +3,36 @@ window.onload = async function() {
 
     document.body.addEventListener('mousemove', (e) => {
         let username = document.getElementById('name').value;
-        const messageBody = { x: e.clientX, y: e.clientY, name: username };
+        let messageBody = { x: e.clientX, y: e.clientY, name: username };
         ws.send(JSON.stringify(messageBody));
     });
 
     ws.onmessage = (webSocketMessage) => {
         const messageBody = JSON.parse(webSocketMessage.data);
+
+        if (messageBody.type == 'delete') {
+            document.querySelector(`[data-sender='${messageBody.sender}']`).remove();
+            return
+        }
+
         const cursor = getOrCreateCursorFor(messageBody);
         cursor.style.transform = `translate(${messageBody.x}px, ${messageBody.y}px)`;
     };
+
+    document.body.addEventListener('click', () => {
+        document.getElementById('name').focus();
+    });
+    
+
+    window.onbeforeunload = function() {
+        let messageBody = { type: 'delete' };
+        ws.send(JSON.stringify(messageBody));
+        ws.close();
+    }
 }
 
 async function connectToServer() {
-    const ws = new WebSocket('ws://localhost:3001');
+    const ws = new WebSocket('ws://localhost:3001', 'cursors');
     return new Promise((resolve, reject) => {
         const timer = setInterval(() => {
             if(ws.readyState === 1) {
@@ -35,6 +52,7 @@ function getOrCreateCursorFor(messageBody) {
     }
 
     const cursor = document.createElement('div');
+    cursor.style.border = `#${messageBody.color} solid 5px`;
     cursor.classList.add('cursor');
 
     const duck = document.createElement('img');

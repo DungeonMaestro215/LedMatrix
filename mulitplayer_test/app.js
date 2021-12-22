@@ -41,63 +41,75 @@ app.listen(port, () => {
 
 // Start WebSocket for cursors
 // https://ably.com/blog/web-app-websockets-nodejs
-ws1.on('connection', (instance) => {
+ws1.on('connection', (socket) => {
   console.log('user connected');
-  console.log(instance);
+  // console.log(socket.protocol);
 
   // Generate user data
-  let id = uuidv4();
-  const color = Math.floor(Math.random() * 360);
-  const metadata = { id, color };
+  let protocol = socket.protocol;
+  let id = getNewID(clients1);
+  let color = Math.floor(Math.random()*16777215).toString(16);
+  color = '0'.repeat(6 - color.length) + color;
 
-  clients1.set(instance, metadata);
+  let metadata = { protocol, id, color };
+
+  clients1.set(socket, metadata);
 
   // Upon receiving a message, send it to all clients within the same protocol
-  instance.on('message', (messageAsString) => {
+  socket.on('message', (messageAsString) => {
     const message = JSON.parse(messageAsString);
-    const metadata = clients1.get(instance);
+    const metadata = clients1.get(socket);
 
     // Add identifying info
     message.sender = metadata.id;
     message.color = metadata.color;
     const outbound = JSON.stringify(message);
-
-    [...clients1.keys()].forEach((client) => {
-      client.send(outbound);
+    
+    [...clients1.entries()].forEach((client_data) => {
+      if (client_data[1].protocol == metadata.protocol) {
+        client_data[0].send(outbound);
+      }
     });
   });
 
-  instance.on("close", () => {
+  socket.on("close", () => {
     console.log('user disconnected');
-    clients1.delete(instance);
+    clients1.delete(socket);
   });
 });
 
-function uuidv4() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  });
+// https://ably.com/blog/web-app-websockets-nodejs
+// function uuidv4() {
+//   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+//     var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+//     return v.toString(16);
+//   });
+// }
+function getNewID(clients) {
+  let max_id = [...clients.values()].reduce((acc, curr) => {
+    return curr.id > acc ? curr.id : acc;
+  }, 0);
+  return max_id + 1;
 }
 console.log("wss up");
 
 
 // Start WebSocket for MultiPaint
-ws2.on('connection', (instance) => {
+ws2.on('connection', (socket) => {
   console.log('user connected');
-  console.log(instance);
+  // console.log(socket);
 
   // Generate user data
   let id = uuidv4();
   const color = Math.floor(Math.random() * 360);
   const metadata = { id, color };
 
-  clients2.set(instance, metadata);
+  clients2.set(socket, metadata);
 
   // Upon receiving a message, send it to all clients within the same protocol
-  instance.on('message', (messageAsString) => {
+  socket.on('message', (messageAsString) => {
     const message = JSON.parse(messageAsString);
-    const metadata = clients2.get(instance);
+    const metadata = clients2.get(socket);
 
     // Add identifying info
     message.sender = metadata.id;
@@ -109,8 +121,8 @@ ws2.on('connection', (instance) => {
     });
   });
 
-  instance.on("close", () => {
+  socket.on("close", () => {
     console.log('user disconnected');
-    clients2.delete(instance);
+    clients2.delete(socket);
   });
 });
