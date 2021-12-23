@@ -74,8 +74,14 @@ html, body {
 } */
 
 /* mobile stuff */
-@media (max-width: 1000px) {
+@media (max-width: 500px) {
     #grid-wrapper {
-        height: 50%;
+        height: 322px;
     }
+
+    .cell {
+        width: 5px;
+        height: 5px;
+    }
+
 }

@@ -88,6 +88,9 @@ function handlePainting(e) {
 }
 
 function colorCell(cell, color) {
+    if (!cell.classList.contains('cell')) {
+        return;
+    }
     cell.style.backgroundColor = color;
 }
 
