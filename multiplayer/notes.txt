@@ -4,6 +4,12 @@ Paint:
     Variable size
     bucket
     make work on mobile
+    fix wrapping
+    adding buttons for tool
+    more tools?
+        colorpicker?
+    clean and comment code
+
 
 MultiPaint:
     Websockets
