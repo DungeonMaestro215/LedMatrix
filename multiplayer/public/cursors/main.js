@@ -4,6 +4,9 @@ window.onload = async function() {
     document.body.addEventListener('mousemove', (e) => {
         handleMoveEvent(e, ws);
     });
+    document.body.addEventListener('touchmove', (e) => {
+        handleMoveEvent(e, ws);
+    });
 
     ws.onmessage = (webSocketMessage) => {
         const messageBody = JSON.parse(webSocketMessage.data);
