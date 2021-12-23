@@ -5,9 +5,6 @@ window.onload = async function() {
         handleMoveEvent(e, ws);
     });
     document.body.addEventListener('touchmove', (e) => {
-        if (e.touches.length != 1) {
-            return;
-        }
         handleMoveEvent(e, ws);
     });
 
@@ -38,14 +35,12 @@ window.onload = async function() {
 function handleMoveEvent(e, ws) {
     e.preventDefault();
 
-    let x = 0;
-    let y = 0;
-    if (e.touches) {
+    let x = e.clientX;
+    let y = e.clientY;
+    if (!x || !y) {
         x = e.touches[0].clientX
         y = e.touches[0].clientY
-    } else {
-        x = e.clientX;
-        y = e.clientY;
+        if (!x || !y) return;
     }
 
     let username = document.getElementById('name').value;
