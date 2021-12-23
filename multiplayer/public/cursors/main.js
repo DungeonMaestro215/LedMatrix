@@ -34,9 +34,13 @@ window.onload = async function() {
 
 function handleMoveEvent(e, ws) {
     e.preventDefault();
+
+    let x = e.touches.clientX
+    let y = e.touches.clientY
+
     let username = document.getElementById('name').value;
     let username_label = document.getElementById('name-label');
-    username_label.innerHTML = e.clientX + " " + e.clientY;
+    username_label.innerHTML = x + " " + y;
     let messageBody = { x: e.clientX, y: e.clientY, name: username };
     ws.send(JSON.stringify(messageBody));
 }
