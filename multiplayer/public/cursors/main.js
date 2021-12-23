@@ -25,7 +25,7 @@ window.onload = async function() {
     });
     
 
-    window.onbeforeunload = function() {
+    document.body.onbeforeunload = function() {
         let messageBody = { type: 'delete' };
         ws.send(JSON.stringify(messageBody));
         ws.close();
