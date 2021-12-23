@@ -30,6 +30,12 @@ function setUpGrid(rows, cols) {
         e.preventDefault();
     });
 
+    grid.addEventListener('mousedown', handlePainting);
+    grid.addEventListener('mousemove', handlePainting);
+    grid.addEventListener('touchstart', handlePainting);
+    grid.addEventListener('touchmove', handlePainting);
+
+
     // Create the rows
     for (let i=0; i<rows; i++) {
         let row = document.createElement('div')
@@ -43,14 +49,14 @@ function setUpGrid(rows, cols) {
             cell.classList.add('red-cell');
 
             // Change cell color if clicked
-            cell.addEventListener('mousedown', handleCellClick);
+            // cell.addEventListener('mousedown', handleCellClick);
 
             // Change cell color if mouse is clicked and dragged over the cell
-            cell.addEventListener('mouseenter', handleCellClick);
+            // cell.addEventListener('mouseenter', handleCellClick);
 
             // Color for mobile
-            cell.addEventListener('touchstart', handleCellClick);
-            cell.addEventListener('touchmove', handleCellClick);
+            // cell.addEventListener('touchstart', handleCellClick);
+            // cell.addEventListener('touchmove', handleCellClick);
             
 
             // Calculate the cell number
@@ -61,20 +67,23 @@ function setUpGrid(rows, cols) {
     }
 }
 
-function handleCellClick(e) {
+function handlePainting(e) {
     e.preventDefault();
 
+
     if (e.touches) {
+        let cell = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
         let button = 1;
         let color = document.getElementById(`colorpicker${button}`).value;
-        colorCell(e.target, color);
+        colorCell(cell, color);
         return;
     }
 
+    let cell = document.elementFromPoint(e.clientX, e.clientY);
     let button = e.buttons;
     if (button == 1 || button == 2) {
         let color = document.getElementById(`colorpicker${button}`).value;
-        colorCell(e.target, color);
+        colorCell(cell, color);
     }
 }
 
