@@ -2,9 +2,7 @@ window.onload = async function() {
     const ws = await connectToServer();
 
     document.body.addEventListener('mousemove', (e) => {
-        let username = document.getElementById('name').value;
-        let messageBody = { x: e.clientX, y: e.clientY, name: username };
-        ws.send(JSON.stringify(messageBody));
+        handleMoveEvent(e, ws);
     });
 
     ws.onmessage = (webSocketMessage) => {
@@ -29,6 +27,12 @@ window.onload = async function() {
         ws.send(JSON.stringify(messageBody));
         ws.close();
     }
+}
+
+function handleMoveEvent(e, ws) {
+    let username = document.getElementById('name').value;
+    let messageBody = { x: e.clientX, y: e.clientY, name: username };
+    ws.send(JSON.stringify(messageBody));
 }
 
 async function connectToServer() {
