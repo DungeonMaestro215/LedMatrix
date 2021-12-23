@@ -72,3 +72,10 @@ html, body {
 .blue-cell:hover {
     background-color: darkblue;
 } */
+
+/* mobile stuff */
+@media (max-width: 1000px) {
+    #grid-wrapper {
+        height: 50%;
+    }
+}
