@@ -1,8 +1,6 @@
 window.onload = async function() {
     const ws = await connectToServer();
 
-    window.addEventListener('focus', () => ws.connect());
-
     document.body.addEventListener('mousemove', (e) => {
         handleMoveEvent(e, ws);
     });

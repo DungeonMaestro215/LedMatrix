@@ -2,7 +2,10 @@ Mix colors
 
 Paint:
     Variable size
+    bucket
+    make work on mobile
 
 MultiPaint:
     Websockets
     Make painting fade
+    add cursors

@@ -43,25 +43,14 @@ function setUpGrid(rows, cols) {
             cell.classList.add('red-cell');
 
             // Change cell color if clicked
-            cell.addEventListener('mousedown', (e) => {
-                e.preventDefault();
-                let button = e.buttons;
-                if (button == 1 || button == 2) {
-                    let color = document.getElementById(`colorpicker${button}`).value;
-                    colorCell(e.target, color);
-                }
-            });
+            cell.addEventListener('mousedown', handleCellClick);
 
             // Change cell color if mouse is clicked and dragged over the cell
-            cell.addEventListener('mouseenter', (e) => {
-                e.preventDefault();
-                let button = e.buttons;
-                if (button == 1 || button == 2) {
-                    let color = document.getElementById(`colorpicker${button}`).value;
-                    colorCell(e.target, color);
-                }
-            });
+            cell.addEventListener('mouseenter', handleCellClick);
 
+            // Color for mobile
+            cell.addEventListener('touchstart', handleCellClick);
+            cell.addEventListener('touchmove', handleCellClick);
             
 
             // Calculate the cell number
@@ -69,6 +58,23 @@ function setUpGrid(rows, cols) {
             cell.setAttribute('cell-num', cell_num);
             row.appendChild(cell);
         }
+    }
+}
+
+function handleCellClick(e) {
+    e.preventDefault();
+
+    if (e.touches) {
+        let button = 1;
+        let color = document.getElementById(`colorpicker${button}`).value;
+        colorCell(e.target, color);
+        return;
+    }
+
+    let button = e.buttons;
+    if (button == 1 || button == 2) {
+        let color = document.getElementById(`colorpicker${button}`).value;
+        colorCell(e.target, color);
     }
 }
 
