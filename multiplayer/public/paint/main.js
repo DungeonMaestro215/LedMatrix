@@ -8,6 +8,12 @@ window.onload = () => {
         clearAll();
     });
 
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        document.getElementById('colorpicker2').remove();
+        document.getElementById('colorpicker2-label').remove();
+        document.getElementById('colorpicker1-label').innerHTML = "Color";
+    }
+
     document.getElementById('brushsize').oninput = function() {
         document.getElementById('brushsize-value').innerHTML = this.value;
     };
