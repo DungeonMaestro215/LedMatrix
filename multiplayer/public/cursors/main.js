@@ -5,6 +5,9 @@ window.onload = async function() {
         handleMoveEvent(e, ws);
     });
     document.body.addEventListener('touchmove', (e) => {
+        if (e.touches.length != 1) {
+            return;
+        }
         handleMoveEvent(e, ws);
     });
 
@@ -13,7 +16,7 @@ window.onload = async function() {
 
         if (messageBody.type == 'delete') {
             document.querySelector(`[data-sender='${messageBody.sender}']`).remove();
-            return
+            return;
         }
 
         const cursor = getOrCreateCursorFor(messageBody);
@@ -46,8 +49,6 @@ function handleMoveEvent(e, ws) {
     }
 
     let username = document.getElementById('name').value;
-    let username_label = document.getElementById('name-label');
-    username_label.innerHTML = x + " " + y;
     let messageBody = { x: x, y: y, name: username };
     ws.send(JSON.stringify(messageBody));
 }
