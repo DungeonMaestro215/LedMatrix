@@ -25,11 +25,12 @@ window.onload = async function() {
     });
     
 
-    document.body.onbeforeunload = function() {
+    window.onbeforeunload = function() {
         let messageBody = { type: 'delete' };
         ws.send(JSON.stringify(messageBody));
         ws.close();
     }
+    window.onunload = window.onbeforeunload;
 }
 
 function handleMoveEvent(e, ws) {
