@@ -35,8 +35,8 @@ window.onload = async function() {
 function handleMoveEvent(e, ws) {
     e.preventDefault();
 
-    let x = e.touches.clientX
-    let y = e.touches.clientY
+    let x = e.touches[0].clientX
+    let y = e.touches[0].clientY
 
     let username = document.getElementById('name').value;
     let username_label = document.getElementById('name-label');
