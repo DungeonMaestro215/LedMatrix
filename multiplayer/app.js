@@ -73,6 +73,20 @@ ws.on('connection', (socket) => {
   });
 
   socket.on("close", () => {
+    const metadata = clients.get(socket);
+
+    let message = { type: 'delete' };
+    // Add identifying info
+    message.sender = metadata.id;
+    message.color = metadata.color;
+    const outbound = JSON.stringify(message);
+
+    [...clients.entries()].forEach((client_data) => {
+      if (client_data[1].protocol == metadata.protocol) {
+        client_data[0].send(outbound);
+      }
+    });
+
     console.log('user disconnected');
     clients.delete(socket);
   });

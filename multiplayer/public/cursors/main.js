@@ -1,6 +1,8 @@
 window.onload = async function() {
     const ws = await connectToServer();
 
+    window.addEventListener('focus', () => ws.connect());
+
     document.body.addEventListener('mousemove', (e) => {
         handleMoveEvent(e, ws);
     });
@@ -26,11 +28,16 @@ window.onload = async function() {
     
 
     window.onbeforeunload = function() {
-        let messageBody = { type: 'delete' };
-        ws.send(JSON.stringify(messageBody));
         ws.close();
     }
-    window.onunload = window.onbeforeunload;
+    // window.onunload = window.onbeforeunload;
+    // document.addEventListener('visibilitychange', (e) => {
+    //     if (document.visibilityState !== 'visible') {
+    //         let messageBody = { type: 'delete' };
+    //         ws.send(JSON.stringify(messageBody));
+    //         ws.close();
+    //     }
+    // });
 }
 
 function handleMoveEvent(e, ws) {
@@ -38,9 +45,9 @@ function handleMoveEvent(e, ws) {
 
     let x = e.clientX;
     let y = e.clientY;
-    if (!x || !y) {
-        x = e.touches[0].clientX
-        y = e.touches[0].clientY
+    if ( (!x || !y) && e.touches) {
+        x = e.touches[0].clientX;
+        y = e.touches[0].clientY;
         if (!x || !y) return;
     }
 
