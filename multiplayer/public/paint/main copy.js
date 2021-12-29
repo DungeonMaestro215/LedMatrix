@@ -6,6 +6,7 @@
 let data = {
     rows: 64,
     cols: 64,
+    tool: undefined,
     colors: []
 };
 
@@ -13,6 +14,7 @@ window.onload = () => {
     document.getElementById('clear').addEventListener('click', () => {
         clearAll();
     });
+    document.getElementById('test').addEventListener('click', test);
 
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         document.getElementById('colorpicker2').remove();
@@ -83,41 +85,51 @@ function setUpGrid(rows, cols) {
 function handlePainting(e) {
     e.preventDefault();
 
-    if (e.touches) {
-        let cell = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
-        let button = 1;
-        let color = document.getElementById(`colorpicker${button}`).value;
-        let size = document.getElementById('brushsize').value;
-        colorCell(cell, color, size);
+    if (!e.target.classList.contains('cell')) {
         return;
     }
 
-    let cell = document.elementFromPoint(e.clientX, e.clientY);
+    if (e.touches) {
+        let cell_num = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY).getAttribute('cell-num');
+        let button = 1;
+        let color = document.getElementById(`colorpicker${button}`).value;
+        let size = document.getElementById('brushsize').value;
+        colorCell(cell_num, color, size);
+        colorAll();
+        return;
+    }
+
+    let cell_num = document.elementFromPoint(e.clientX, e.clientY).getAttribute('cell-num');
     let button = e.buttons;
     if (button == 1) {
     // if (button == 1 || button == 2) {
         let color = document.getElementById(`colorpicker${button}`).value;
         let size = document.getElementById('brushsize').value;
-        colorCell(cell, color, size);
+        colorCell(cell_num, color, size);
+        colorAll();
     }
 
     if (button == 2) {
         let color = document.getElementById(`colorpicker${button}`).value;
-        fill(cell, color);
+        fill(cell_num, color);
     }
 }
 
-function colorCell(cell, color, size=1) {
-    if (!cell.classList.contains('cell')) {
+function colorCell(cell_num, color, size=1) {
+    cell_num = parseInt(cell_num);
+    if (cell_num < 0 || cell_num > data.colors.length) {
         return;
     }
-    cell.style.backgroundColor = color;
-    data.colors[cell.getAttribute('cell-num')] = color;
+        
+    data.colors[cell_num] = color;
 
-    if (size == 1) {
+    if (size <= 1) {
         return;
     } else {
-        colorCell(cell, color, size-1);
+        colorCell(cell_num+1, color, size-1);
+        colorCell(cell_num-1, color, size-1);
+        colorCell(cell_num+data.cols, color, size-1);
+        colorCell(cell_num-data.cols, color, size-1);
     }
 }
 
@@ -126,7 +138,7 @@ function colorAll() {
 
     cells.forEach((cell) => {
         let idx = cell.getAttribute('cell-num');
-        colorCell(cell, data.colors[idx]);
+        cell.style.backgroundColor = data.colors[idx];
     });
 }
 
@@ -141,8 +153,8 @@ function clearAll() {
     colorAll();
 }
 
-function fill(cell, color) {
-    let cell_num = cell.getAttribute('cell-num');
+function fill(cell_num, color) {
+    cell_num = parseInt(cell_num);
     floodFill(cell_num, data.colors[cell_num], color);
     colorAll();
 }
