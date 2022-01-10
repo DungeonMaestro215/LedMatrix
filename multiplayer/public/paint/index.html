@@ -29,10 +29,18 @@
             <input type="color" id="colorpicker1" value="#000000">
             <label for="colorpicker2" id="colorpicker2-label">Right Click Color:</label>
             <input type="color" id="colorpicker2" value="#ffffff">
+
+            <div id="tools-wrapper">
+                <label for="brush" id="brush-label"><img src="../images/mybrush.png"></label>
+                <input type="radio" id="brush" name="tool" value="brush" checked>
+                <label for="bucket" id="bucket-label"><img src="../images/mybucket.png"></label>
+                <input type="radio" id="bucket" name="tool" value="bucket">
+            </div>
+            
     
             <div id="slider-wrapper">
-                <label for="brushsize">Size:</label>
                 <input type="range" id="brushsize" min="1" max="5" value="2">
+                <label for="brushsize">Size:</label>
                 <p><span id="brushsize-value">2</span></p>
             </div>
         

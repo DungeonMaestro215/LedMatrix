@@ -19,11 +19,11 @@ class Controller {
         const event_list = {
             clear: this.handleClear,
             test: this.handleTest,
-            color: this.handleColor,
-            fill: this.handleFill
+            brush: this.handleBrush,
+            bucket: this.handleBucket,
         }
 
-        event_list[e.type](e);
+        event_list[e.tool](e);
     }
 
     // Clear the model and update the view
@@ -33,13 +33,20 @@ class Controller {
     }
 
     // Paint the cell and any neighbors, then update the view
-    handleColor = (e) => {
-        this.model.colorCell(e.cell_num, e.color, e.size);
-        this.view.colorAll(this.model.getData());
+    handleBrush = (e) => {
+        if (e.type === 'click') {
+            this.model.colorCell(e.cell_num, e.color, e.size);
+            this.model.setLast(e.cell_num);
+            this.view.colorAll(this.model.getData());
+        } else if (e.type === 'drag') {
+            this.model.line(model.getLast(), e.cell_num, e.color, e.size);
+            this.model.setLast(e.cell_num);
+            this.view.colorAll(this.model.getData());
+        }
     }
 
     // Floodfill the model, the update the view
-    handleFill = (e) => {
+    handleBucket = (e) => {
         this.model.fill(e.cell_num, e.color);
         this.view.colorAll(this.model.getData());
     }
