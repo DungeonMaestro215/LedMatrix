@@ -54,9 +54,13 @@ class Controller {
         this.view.colorAll(this.model.getData());
     }
 
-    // handleDropper = (e) => {
-    //     console.log(e);
-    // }
+    handleDropper = (e) => {
+        // console.log(e.cell_num);
+        // console.log(this.model.getData()[e.cell_num]);
+        let color = this.model.getData()[e.cell_num];
+        let button = e.button;
+        this.view.setColor(color, button);
+    }
 
     handleTest = (e) => {
         console.log('Ladies and gentlemen');

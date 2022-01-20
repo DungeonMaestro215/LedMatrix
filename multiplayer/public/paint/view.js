@@ -86,6 +86,10 @@ class View {
         return grid;
     }
 
+    setColor(color, button) {
+        document.getElementById(`colorpicker${button}`).value = color;
+    }
+
     // Updates all of the cells in the grid based on the given data
     colorAll(data) {
         const cells = document.querySelectorAll('.cell');
@@ -114,7 +118,7 @@ class View {
             const color = document.getElementById(`colorpicker${button}`).value;
             const size = document.getElementById('brushsize').value;
 
-            this.updateListeners({ tool: this.tool, type: type, cell_num: cell_num, color: color, size: size });
+            this.updateListeners({ tool: this.tool, type: type, cell_num: cell_num, color: color, size: size, button: button });
             return;
         }
 
@@ -131,7 +135,7 @@ class View {
         if (button == 1 || button == 2) {
             const color = document.getElementById(`colorpicker${button}`).value;
             const size = document.getElementById('brushsize').value;
-            this.updateListeners({ tool: this.tool, type: type, cell_num: cell_num, color: color, size: size });
+            this.updateListeners({ tool: this.tool, type: type, cell_num: cell_num, color: color, size: size, button: button });
         }
 
         // if (button == 2) {
