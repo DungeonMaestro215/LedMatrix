@@ -12,6 +12,8 @@ class Controller {
         this.view = view;
 
         view.addListener((e) => this.handleEvent(e));
+        console.log(this.model.getData());
+        this.view.colorAll(this.model.getData());
     }
 
     // Given an event, what should happen?
@@ -21,6 +23,7 @@ class Controller {
             test: this.handleTest,
             brush: this.handleBrush,
             bucket: this.handleBucket,
+            dropper: this.handleDropper,
         }
 
         event_list[e.tool](e);
@@ -39,7 +42,7 @@ class Controller {
             this.model.setLast(e.cell_num);
             this.view.colorAll(this.model.getData());
         } else if (e.type === 'drag') {
-            this.model.line(model.getLast(), e.cell_num, e.color, e.size);
+            this.model.line(this.model.getLast(), e.cell_num, e.color, e.size);
             this.model.setLast(e.cell_num);
             this.view.colorAll(this.model.getData());
         }
@@ -51,8 +54,11 @@ class Controller {
         this.view.colorAll(this.model.getData());
     }
 
+    // handleDropper = (e) => {
+    //     console.log(e);
+    // }
+
     handleTest = (e) => {
         console.log('Ladies and gentlemen');
-
     }
 }

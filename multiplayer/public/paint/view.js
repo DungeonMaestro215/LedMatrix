@@ -99,6 +99,7 @@ class View {
     // Handler for when a cell is clicked
     handlePainting(e) {
         e.preventDefault();
+        console.log(e.target.style.backgroundColor);
 
         if (!e.target.classList.contains('cell')) {
             return;
@@ -119,6 +120,13 @@ class View {
 
         const cell_num = parseInt(document.elementFromPoint(e.clientX, e.clientY).getAttribute('cell-num'));
         const button = e.buttons;
+
+        // Dropper tool to match colors
+        // if (this.tool === 'dropper') {
+        //     const color = document.getElementById(`colorpicker${button}`).value;
+        //     return
+        // }
+
         // if (button == 1) {
         if (button == 1 || button == 2) {
             const color = document.getElementById(`colorpicker${button}`).value;

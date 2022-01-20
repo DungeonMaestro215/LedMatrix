@@ -8,9 +8,9 @@ window.onload = () => {
     const cols = 64;
 
     // Setup MVC
-    model = new Model(rows, cols);
-    view = new View(rows, cols);
-    control = new Controller(model, view);
+    const model = new Model(rows, cols);
+    const view = new View(rows, cols);
+    const control = new Controller(model, view);
 
     // Load into DOM
     document.getElementById('grid-wrapper').append(view.div);
