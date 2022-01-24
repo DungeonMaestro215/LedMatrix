@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="height=device-height, initial-scale=1.0, user-scalable=no">
 
     <link rel="stylesheet" href="../style.css">
 
-    <title>MultiPaint</title>
+    <title>Paint</title>
 </head>
 <body>
     <div id="main">
         <div id="grid-wrapper">
-            <div id="grid">
+            <!-- <div id="grid"> -->
                 <!-- <div class="row">
                     <div class="cell"></div>
                     <div class="cell"></div>
@@ -21,22 +21,38 @@
                     <div class="cell"></div>
                     <div class="cell"></div>
                 </div> -->
-            </div>
+            <!-- </div> -->
         </div>
 
         <div id="settings-wrapper">
-            <label for="colorpicker1">Color 1:</label>
+            <label for="colorpicker1" id="colorpicker1-label">Left Click Color:</label>
             <input type="color" id="colorpicker1" value="#000000">
-            <label for="colorpicker2">Color 2:</label>
+            <label for="colorpicker2" id="colorpicker2-label">Right Click Color:</label>
             <input type="color" id="colorpicker2" value="#ffffff">
+
+            <div id="tools-wrapper">
+                <label for="brush" id="brush-label"><img src="../images/mybrush.png"></label>
+                <input type="radio" id="brush" name="tool" value="brush" checked>
+                <label for="bucket" id="bucket-label"><img src="../images/mybucket.png"></label>
+                <input type="radio" id="bucket" name="tool" value="bucket">
+                <label for="dropper" id="dropper-label"><img src="../images/duck2.png" width="32"></label>
+                <input type="radio" id="dropper" name="tool" value="dropper">
+            </div>
+            
     
             <div id="slider-wrapper">
+                <input type="range" id="brushsize" min="1" max="5" value="2">
                 <label for="brushsize">Size:</label>
-                <input type="range" id="brushsize" min="0" max="5" value="0">
-                <p><span id="brushsize-value">0</span></p>
+                <p><span id="brushsize-value">2</span></p>
             </div>
         
             <button id="clear">Clear</button>
+            <button id="test">[Test]</button>
+
+            <div id="name-wrapper">
+                <label id="name-label" for="name">Username:</label>
+                <input type="text" name="name" id="name">
+            </div>
 
         </div>
         
@@ -45,6 +61,10 @@
     </div>
 
     <script src="main.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.0/axios.min.js"></script>
+    <script src="test.js"></script>
+    <script src="model.js"></script>
+    <script src="view.js"></script>
+    <script src="controller.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.0/axios.min.js"></script> -->
 </body>
 </html>
