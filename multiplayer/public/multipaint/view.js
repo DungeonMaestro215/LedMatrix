@@ -201,7 +201,7 @@ class View {
 
     // Cursor handlers
     handleCursor(e) {
-        e.preventDefault();
+        // e.preventDefault();
         let x = e.clientX;
         let y = e.clientY;
         if ( (!x || !y) && e.touches) {
