@@ -165,7 +165,7 @@ class View {
     }
     
     getOrCreateCursorFor(id, name, color) {
-        if (id === null) return;
+        // if (id === null) return;
 
         const existing = document.querySelector(`[data-sender='${id}']`);
         if (existing) {
@@ -219,7 +219,7 @@ class View {
     }
 
     moveCursor(id, name, color, x, y) {
-        if (id === null) return;
+        // if (id === null) return;
 
         this.cursor.x = x;
         this.cursor.y = y;

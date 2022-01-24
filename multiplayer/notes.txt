@@ -16,7 +16,12 @@ Paint:
 
 MultiPaint:
     Websockets
+        Better track ID of user
     Make painting fade
     add cursors
         Move some cursor code to View
         Player's cursor should not have to update through WS (makes it laggy)
+    Updating Grid
+        Don't update with same changes from this client 
+        Wait to send changes... somehow (on 'stop' or after a certain number of changes?)
+    

@@ -11,6 +11,7 @@ class Controller {
         this.model = model;
         this.view = view;
         this.setupWS();
+        this.id = null;
         // this.ws = await this.connectToServer();
         // ws.onmessage = this.onMessage;
         // window.onbeforeunload = () => this.ws.close();
@@ -119,7 +120,10 @@ class Controller {
         //     this.view.colorAll(this.model.getData());
         // }
 
-        if (messageBody.type === "paint") {
+        // if (messageBody.type === "paint") {
+        if (messageBody.type === "paint" && messageBody.sender != this.view.getCursor().id) {
+            console.log(messageBody.sender);
+            console.log(this.view.getCursor().id);
             let changes = messageBody.changes;
             this.model.updateFromChanges(changes);
             this.view.colorAll(this.model.getData());
