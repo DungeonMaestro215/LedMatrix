@@ -56,6 +56,7 @@ class Controller {
             this.model.line(this.model.getLast(), e.cell_num, e.color, e.size);
             this.model.setLast(e.cell_num);
             this.view.colorAll(this.model.getData());
+            this.ws.send(JSON.stringify({ type: "paint", data: this.model.getData() }));
         } else if (e.type === 'stop') {
             this.model.setLast(null);
         }
@@ -97,17 +98,19 @@ class Controller {
 
         if (messageBody.type == 'delete') {
             this.view.removeCursor(messageBody.sender);
-            // document.querySelector(`[data-sender='${messageBody.sender}']`).remove();
             return;
         }
 
-        if (messageBody.sender != this.view.getCursor().id) {
-            console.log("test");
+        if (messageBody.type === "cursor" && messageBody.sender != this.view.getCursor().id) {
+            // console.log("test");
             this.view.moveCursor(messageBody.sender, messageBody.name, messageBody.color, messageBody.x, messageBody.y);
         }
 
-        // const cursor = this.view.getOrCreateCursorFor(messageBody);
-        // cursor.style.transform = `translate(${messageBody.x}px, ${messageBody.y}px)`;
+        if (messageBody.type === "paint") {
+            let data = messageBody.data;
+            this.model.updateData(data);
+            this.view.colorAll(this.model.getData());
+        }
     }
 
     handleCursor = (e) => {

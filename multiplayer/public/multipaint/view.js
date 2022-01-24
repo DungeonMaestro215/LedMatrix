@@ -215,7 +215,7 @@ class View {
 
         let messageBody = { x: x, y: y, name: username };
         // ws.send(JSON.stringify(messageBody));
-        this.updateListeners({ tool: "cursor", message: messageBody });
+        this.updateListeners({ tool: "cursor", type: "cursor", message: messageBody });
     }
 
     moveCursor(id, name, color, x, y) {
