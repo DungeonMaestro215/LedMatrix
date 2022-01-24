@@ -10,6 +10,9 @@ Paint:
         colorpicker?
     clean and comment code
 
+    After picking color, reselect the brush tool (?)
+    Fix bug with line from last mouse up
+
 
 MultiPaint:
     Websockets
