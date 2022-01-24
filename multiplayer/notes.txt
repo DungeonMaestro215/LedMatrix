@@ -1,17 +1,17 @@
 Mix colors
 
 Paint:
-    Variable size
-    bucket
-    make work on mobile
-    fix wrapping
-    adding buttons for tool
+    X Variable size
+    X bucket
+    X make work on mobile
+    X fix wrapping
+    X adding buttons for tool
     more tools?
-        colorpicker?
+        X colorpicker?
     clean and comment code
 
     After picking color, reselect the brush tool (?)
-    Fix bug with line from last mouse up
+    X Fix bug with line from last mouse up
 
 
 MultiPaint:

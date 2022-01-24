@@ -62,8 +62,10 @@ class View {
 
         grid.addEventListener('mousedown', (e) => this.handlePainting(e));
         grid.addEventListener('mousemove', (e) => this.handlePainting(e));
+        grid.addEventListener('mouseup', (e) => this.handlePainting(e));
         grid.addEventListener('touchstart', (e) => this.handlePainting(e));
         grid.addEventListener('touchmove', (e) => this.handlePainting(e));
+        grid.addEventListener('touchend', (e) => this.handlePainting(e));
 
         // Create the rows
         for (let i=0; i<rows; i++) {
@@ -103,22 +105,30 @@ class View {
     // Handler for when a cell is clicked
     handlePainting(e) {
         e.preventDefault();
-        console.log(e.target.style.backgroundColor);
+        // console.log(e.target.style.backgroundColor);
 
         if (!e.target.classList.contains('cell')) {
             return;
         }
 
         let type = 'click';
-        if (e.type === 'mousemove') type = 'drag';
+        if (e.type === 'mousemove' || e.type === 'touchmove') type = 'drag';
+        else if (e.type === 'mouseup' || e.type === 'touchend') {
+            type = 'stop';
+            this.updateListeners({ tool: this.tool, type: type });
+        }
 
         if (e.touches) {
-            const cell_num = parseInt(document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY).getAttribute('cell-num'));
-            const button = 1;
-            const color = document.getElementById(`colorpicker${button}`).value;
-            const size = document.getElementById('brushsize').value;
+            try {
+                const cell_num = parseInt(document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY).getAttribute('cell-num'));
+                const button = 1;
+                const color = document.getElementById(`colorpicker${button}`).value;
+                const size = document.getElementById('brushsize').value;
+                this.updateListeners({ tool: this.tool, type: type, cell_num: cell_num, color: color, size: size, button: button });
+            } catch (TypeError) {
+                console.log("Out of Bounds");
+            }
 
-            this.updateListeners({ tool: this.tool, type: type, cell_num: cell_num, color: color, size: size, button: button });
             return;
         }
 

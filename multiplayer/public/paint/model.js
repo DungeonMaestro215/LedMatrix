@@ -71,6 +71,9 @@ class Model {
     // Colors in a line from point A to point B using Bresenham's line algorithm
     // from https://jstutorial.medium.com/how-to-code-your-first-algorithm-draw-a-line-ca121f9a1395
     line = (a, b, color, size=1) => {
+        if (a === null) a = b;
+        else if (b === null) return;
+
         let y1 = Math.floor(a / this.cols);
         let x1 = a % this.cols;
         let y2 = Math.floor(b / this.cols);

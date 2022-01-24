@@ -29,7 +29,7 @@ html, body {
 #grid {
     border: 1px black solid;
     /* cursor: url('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/313/paintbrush_1f58c-fe0f.png') 0 100, auto; */
-    cursor: url(images/mybrush.png) 0 32, auto;
+    cursor: url(images/mydropper.png) 0 32, auto;
 }
 
 .row {

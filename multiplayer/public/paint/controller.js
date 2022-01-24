@@ -45,6 +45,8 @@ class Controller {
             this.model.line(this.model.getLast(), e.cell_num, e.color, e.size);
             this.model.setLast(e.cell_num);
             this.view.colorAll(this.model.getData());
+        } else if (e.type === 'stop') {
+            this.model.setLast(null);
         }
     }
 
