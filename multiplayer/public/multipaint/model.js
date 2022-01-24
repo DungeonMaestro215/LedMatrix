@@ -10,11 +10,20 @@ class Model {
         this.colorAll('#ffffff');
         this.listeners = [];
         this.last = null;
+        this.changes = [];
     }
 
     // Send back the data
     getData() {
         return this.data;
+    }
+
+    getChanges() {
+        return this.changes;
+    }
+
+    clearChanges() {
+        this.changes = [];
     }
 
     // Getters and setters for the 'last' property
@@ -30,6 +39,12 @@ class Model {
         this.data = new_data;
     }
 
+    updateFromChanges(changes) {
+        changes.forEach(change => {
+            this.data[change.cell_num] = change.color;
+        });
+    }
+
     // Handle painting a cell
     // Larger brush sizes will recursively call this
     colorCell(cell_num, color, size=1) {
@@ -39,6 +54,7 @@ class Model {
         }
         
         this.data[cell_num] = color;
+        this.changes.push({ cell_num: cell_num, color: color });
 
         // Recursivel color around the cell
         // Also obey the boundaries of the box
