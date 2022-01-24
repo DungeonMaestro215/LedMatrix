@@ -52,11 +52,12 @@ class Controller {
             this.model.colorCell(e.cell_num, e.color, e.size);
             this.model.setLast(e.cell_num);
             this.view.colorAll(this.model.getData());
+            this.ws.send(JSON.stringify({ type: "click", data: { cell_num: e.cell_num, color: e.color, size: e.size } }));
         } else if (e.type === 'drag') {
             this.model.line(this.model.getLast(), e.cell_num, e.color, e.size);
             this.model.setLast(e.cell_num);
             this.view.colorAll(this.model.getData());
-            this.ws.send(JSON.stringify({ type: "paint", data: this.model.getData() }));
+            this.ws.send(JSON.stringify({ type: "drag", data: { cell_num: e.cell_num, last: this.model.getLast(), color: e.color, size: e.size } }));
         } else if (e.type === 'stop') {
             this.model.setLast(null);
         }
@@ -106,9 +107,13 @@ class Controller {
             this.view.moveCursor(messageBody.sender, messageBody.name, messageBody.color, messageBody.x, messageBody.y);
         }
 
-        if (messageBody.type === "paint") {
+        if (messageBody.type === "click") {
             let data = messageBody.data;
-            this.model.updateData(data);
+            this.model.colorCell(data.cell_num, data.color, data.size);
+            this.view.colorAll(this.model.getData());
+        } else if (messageBody.type === "drag") {
+            let data = messageBody.data;
+            this.model.line(data.last, data.cell_num, data.color, data.size);
             this.view.colorAll(this.model.getData());
         }
     }
