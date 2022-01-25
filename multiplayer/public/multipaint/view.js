@@ -7,12 +7,13 @@ class View {
         this.div = this.setUpGrid(rows, cols);
         this.listeners = [];
         this.tool = 'brush';
+        this.id = null;
         this.cursor = {
-            id: null,
             color: null,
             x: 0,
-            y: 0
-        }
+            y:0
+        };
+        // this.setCursor(null, null, 0, 0);
     }
 
     // Uses listeners to update the controller of events
@@ -102,6 +103,25 @@ class View {
         document.getElementById(`colorpicker${button}`).value = color;
     }
 
+    // setCursor(id, color, x, y) {
+    //     this.cursor.id = id;
+    //     this.cursor.color = color;
+    //     this.cursor.x = x;
+    //     this.cursor.y =y;
+    // }
+
+    getId() {
+        return this.id;
+    }
+
+    setId(id) {
+        this.id = id;
+    }
+
+    setCursorColor(color) {
+        this.cursor.color = color;
+    }
+
     // Updates all of the cells in the grid based on the given data
     colorAll(data) {
         const cells = document.querySelectorAll('.cell');
@@ -165,7 +185,7 @@ class View {
     }
     
     getOrCreateCursorFor(id, name, color) {
-        // if (id === null) return;
+        if (id === null) return;
 
         const existing = document.querySelector(`[data-sender='${id}']`);
         if (existing) {
@@ -173,7 +193,7 @@ class View {
             return existing;
         }
 
-        this.cursor.id = id;
+        this.id = id;
         this.cursor.color = color;
 
         const cursor = document.createElement('div');
@@ -211,7 +231,7 @@ class View {
         }
 
         let username = document.getElementById('name').value;
-        this.moveCursor(this.cursor.id, username, this.cursor.color, x, y);
+        this.moveCursor(this.id, username, this.cursor.color, x, y);
 
         let messageBody = { x: x, y: y, name: username };
         // ws.send(JSON.stringify(messageBody));
@@ -219,7 +239,7 @@ class View {
     }
 
     moveCursor(id, name, color, x, y) {
-        // if (id === null) return;
+        if (id === null) return;
 
         this.cursor.x = x;
         this.cursor.y = y;
