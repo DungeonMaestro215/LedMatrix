@@ -40,6 +40,7 @@ class Model {
     }
 
     updateFromChanges(changes) {
+        console.log(changes);
         changes.forEach(change => {
             this.data[change.cell_num] = change.color;
         });

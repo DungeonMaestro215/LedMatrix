@@ -55,12 +55,14 @@ class Controller {
             this.view.colorAll(this.model.getData());
             // this.ws.send(JSON.stringify({ type: "click", data: { cell_num: e.cell_num, color: e.color, size: e.size } }));
             this.ws.send(JSON.stringify({ type: "paint", changes: this.model.getChanges() }));
+            this.model.clearChanges();
         } else if (e.type === 'drag') {
             this.model.line(this.model.getLast(), e.cell_num, e.color, e.size);
             this.model.setLast(e.cell_num);
             this.view.colorAll(this.model.getData());
             // this.ws.send(JSON.stringify({ type: "drag", data: { cell_num: e.cell_num, last: this.model.getLast(), color: e.color, size: e.size } }));
             this.ws.send(JSON.stringify({ type: "paint", changes: this.model.getChanges() }));
+            this.model.clearChanges();
         } else if (e.type === 'stop') {
             this.model.setLast(null);
         }
