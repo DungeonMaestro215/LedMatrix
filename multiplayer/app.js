@@ -49,7 +49,7 @@ ws.on('connection', (socket) => {
   let protocol = socket.protocol;
   let id = getNewID(clients);
   let color = Math.floor(Math.random()*16777215).toString(16);
-  // socket.send({ type: "id", id: id, color: color });
+  socket.send({ type: "id", id: id, color: color });
   color = '0'.repeat(6 - color.length) + color;
 
   let metadata = { protocol, id, color };
