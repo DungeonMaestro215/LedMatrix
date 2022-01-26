@@ -25,3 +25,6 @@ MultiPaint:
         Don't update with same changes from this client 
         Wait to send changes... somehow (on 'stop' or after a certain number of changes?)
     
+
+Cursors
+    Doesn't work on mobile...
