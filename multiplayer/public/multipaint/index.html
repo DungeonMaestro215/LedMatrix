@@ -6,6 +6,7 @@
     <meta name="viewport" content="height=device-height, initial-scale=1.0, user-scalable=no">
 
     <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../util.css">
 
     <title>Paint</title>
 </head>
@@ -25,6 +26,11 @@
         </div>
 
         <div id="settings-wrapper">
+            <div id="name-wrapper">
+                <label id="name-label" for="name">Username:</label>
+                <input type="text" name="name" id="name">
+            </div>
+
             <label for="colorpicker1" id="colorpicker1-label">Left Click Color:</label>
             <input type="color" id="colorpicker1" value="#000000">
             <label for="colorpicker2" id="colorpicker2-label">Right Click Color:</label>
@@ -41,18 +47,14 @@
             
     
             <div id="slider-wrapper">
+                <label for="brushsize">Size:<span id="brushsize-value">2</span></label>
                 <input type="range" id="brushsize" min="1" max="5" value="2">
-                <label for="brushsize">Size:</label>
-                <p><span id="brushsize-value">2</span></p>
             </div>
         
-            <button id="clear">Clear</button>
-            <button id="test">[Test]</button>
+            <button class="defaultButton" id="clear">Clear</button>
+            <button class="defaultButton" id="test">[Test]</button>
 
-            <div id="name-wrapper">
-                <label id="name-label" for="name">Username:</label>
-                <input type="text" name="name" id="name">
-            </div>
+            
 
         </div>
         
