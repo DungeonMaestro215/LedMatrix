@@ -88,6 +88,7 @@ class Controller {
     
     async connectToServer() {
         const ws = new WebSocket('ws://afternoon-plateau-82522.herokuapp.com/:3000', 'cursors');
+    
         // const ws = new WebSocket('ws://localhost:5000', 'paint');
         return new Promise((resolve, reject) => {
             const timer = setInterval(() => {
@@ -102,7 +103,7 @@ class Controller {
     onMessage = (webSocketMessage) => {
         const messageBody = JSON.parse(webSocketMessage.data);
 
-        console.log(messageBody);
+        // console.log(messageBody);
 
         if (messageBody.type === "id") {
             this.view.setId(messageBody.id);
@@ -115,7 +116,7 @@ class Controller {
         }
 
         if (messageBody.type === "cursor" && messageBody.sender != this.view.getCursor().id) {
-            console.log(messageBody.sender);
+            // console.log(messageBody.sender);
             // console.log("test");
             this.view.moveCursor(messageBody.sender, messageBody.name, messageBody.color, messageBody.x, messageBody.y);
         }
@@ -132,8 +133,8 @@ class Controller {
 
         // if (messageBody.type === "paint") {
         if (messageBody.type === "paint" && messageBody.sender != this.view.getCursor().id) {
-            console.log(messageBody.sender);
-            console.log(this.view.getId());
+            // console.log(messageBody.sender);
+            // console.log(this.view.getId());
             let changes = messageBody.changes;
             this.model.updateFromChanges(changes);
             this.view.colorAll(this.model.getData());
