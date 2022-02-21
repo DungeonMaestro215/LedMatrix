@@ -24,6 +24,7 @@ class Controller {
     async setupWS() {
         this.ws = await this.connectToServer();
         this.ws.onmessage = this.onMessage;
+        this.ws.send(JSON.stringify({ type: "initial" }));
         window.onbeforeunload = () => this.ws.close();
     }
 
@@ -88,8 +89,8 @@ class Controller {
     
     async connectToServer() {
         const ws = new WebSocket('ws://afternoon-plateau-82522.herokuapp.com/:3000', 'cursors');
-    
-        // const ws = new WebSocket('ws://localhost:5000', 'paint');
+        // const ws = new WebSocket('ws://localhost:3000', 'paint');
+
         return new Promise((resolve, reject) => {
             const timer = setInterval(() => {
                 if(ws.readyState === 1) {
@@ -105,8 +106,9 @@ class Controller {
 
         // console.log(messageBody);
 
-        if (messageBody.type === "id") {
-            this.view.setId(messageBody.id);
+        if (messageBody.type === "initial") {
+            console.log(messageBody);
+            this.view.setId(messageBody.sender);
             this.view.setCursorColor(messageBody.color);
         }
 
@@ -116,8 +118,6 @@ class Controller {
         }
 
         if (messageBody.type === "cursor" && messageBody.sender != this.view.getCursor().id) {
-            // console.log(messageBody.sender);
-            // console.log("test");
             this.view.moveCursor(messageBody.sender, messageBody.name, messageBody.color, messageBody.x, messageBody.y);
         }
 

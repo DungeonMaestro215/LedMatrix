@@ -1,13 +1,21 @@
 .defaultButton {
-    background-color: hsl(213, 100%, 88%);
-    font-size: 1.5rem;
+    background-color: var(--color-darkorange);
+    color: var(--color-black);
     padding: .5rem 1rem;
-    box-shadow: 0 0 2px black;
+    box-shadow: 0 0 2px var(--color-accent);
     border-radius: 5px;
     transition: .2s ease;
 }
 
 .defaultButton:hover {
-    background-color: hsl(213, 100%, 80%);
+    background-color: var(--color-darkred);
     transition: .2s ease;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.transparent {
+    background-color: transparent;
 }

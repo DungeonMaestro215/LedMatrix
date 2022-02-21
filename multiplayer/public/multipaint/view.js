@@ -115,6 +115,7 @@ class View {
     }
 
     setId(id) {
+        console.log('ID: ' + this.id);
         this.id = id;
     }
 
@@ -193,8 +194,8 @@ class View {
             return existing;
         }
 
-        this.id = id;
-        this.cursor.color = color;
+        console.log("new cursor");
+        console.log(this.id);
 
         const cursor = document.createElement('div');
         cursor.style.border = `#${color} solid 5px`;
@@ -233,7 +234,7 @@ class View {
         let username = document.getElementById('name').value;
         this.moveCursor(this.id, username, this.cursor.color, x, y);
 
-        let messageBody = { x: x, y: y, name: username };
+        let messageBody = { type: "cursor", x: x, y: y, name: username };
         // ws.send(JSON.stringify(messageBody));
         this.updateListeners({ tool: "cursor", type: "cursor", message: messageBody });
     }
@@ -241,8 +242,8 @@ class View {
     moveCursor(id, name, color, x, y) {
         if (id === null) return;
 
-        this.cursor.x = x;
-        this.cursor.y = y;
+        // this.cursor.x = x;
+        // this.cursor.y = y;
         const cursor = this.getOrCreateCursorFor(id, name, color);
         cursor.style.transform = `translate(${x-35}px, ${y-35}px)`;
     }

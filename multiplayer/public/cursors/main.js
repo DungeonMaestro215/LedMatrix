@@ -11,6 +11,12 @@ window.onload = async function() {
     ws.onmessage = (webSocketMessage) => {
         const messageBody = JSON.parse(webSocketMessage.data);
 
+        if (messageBody.type == "initial") {
+            id = messageBody.sender;
+            console.log(id);
+            return;
+        }
+
         if (messageBody.type == 'delete') {
             document.querySelector(`[data-sender='${messageBody.sender}']`).remove();
             return;
@@ -21,6 +27,7 @@ window.onload = async function() {
     };
 
     document.body.addEventListener('click', () => {
+        console.log("test");
         document.getElementById('name').focus();
     });
     
@@ -43,6 +50,8 @@ function handleMoveEvent(e, ws) {
 
     let x = e.clientX;
     let y = e.clientY;
+
+    // If on mobile
     if ( (!x || !y) && e.touches) {
         x = e.touches[0].clientX;
         y = e.touches[0].clientY;
@@ -55,8 +64,8 @@ function handleMoveEvent(e, ws) {
 }
 
 async function connectToServer() {
-    // const ws = new WebSocket('ws://afternoon-plateau-82522.herokuapp.com/:3000', 'cursors');
-    const ws = new WebSocket('ws://localhost:5000', 'cursors');
+    const ws = new WebSocket('ws://afternoon-plateau-82522.herokuapp.com/:3000', 'cursors');
+    // const ws = new WebSocket('ws://localhost:3000', 'cursors');
     return new Promise((resolve, reject) => {
         const timer = setInterval(() => {
             if(ws.readyState === 1) {

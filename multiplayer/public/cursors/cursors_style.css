@@ -1,7 +1,6 @@
 body {
     height: 100vh;
     margin: 0;
-    background-color: aliceblue;
     overflow: hidden;
     cursor: none;
     touch-action: none;
@@ -16,8 +15,4 @@ img {
     width: 70px;
     height: 70px;
     transition: all ease;
-}
-
-#name-wrapper {
-    position: absolute;
 }

@@ -24,8 +24,6 @@ const ws = new WebSocket.Server({ server });
 const clients = new Map();
 
 // Send the page
-app.get('/', (req, res) => { });
-
 app.get('/ascii', (req, res) => {
   res.send(cool())
 });
@@ -38,23 +36,21 @@ server.listen(port, () => {
 // Start WebSocket for cursors
 // https://ably.com/blog/web-app-websockets-nodejs
 ws.on('connection', (socket) => {
-  console.log('user connected');
-  // console.log(socket.protocol);
-
   // Generate user data
   let protocol = socket.protocol;
   let id = getNewID(clients);
   let color = Math.floor(Math.random()*16777215).toString(16);  // Random number 0-16^6 (0-ffffff)
-  color = '0'.repeat(6 - color.length) + color;   // Pad 0's
+  color = '0'.repeat(6 - color.length) + color;   // Pad with 0's
 
-  let connectionMessage = { type: "id", id: id, color: color };
-  socket.send(JSON.stringify(connectionMessage));
-  console.log("connection info sent!");
-  console.log(JSON.stringify(connectionMessage));
+  // let connectionMessage = { type: "id", id: id, color: color };
+  // socket.send(JSON.stringify(connectionMessage));
+  // console.log("connection info sent!");
+  // console.log(JSON.stringify(connectionMessage));
 
   let userdata = { protocol, id, color };
 
   clients.set(socket, userdata);
+  console.log(`user ${id} connected`);
 
   // Upon receiving a message, send it to all clients within the same protocol
   socket.on('message', (messageAsString) => {
@@ -65,9 +61,17 @@ ws.on('connection', (socket) => {
     message.sender = userdata.id;
     message.color = userdata.color;
     const outbound = JSON.stringify(message);
+
+    // Client will send an initial message to recieve their id
+    if (message.type === "initial") {
+      console.log("initial");
+      socket.send(outbound);
+      return;
+    }
     
     [...clients.entries()].forEach((client_data) => {
       if (client_data[1].protocol == userdata.protocol) {
+        // console.log(client_data[1]);
         client_data[0].send(outbound);
       }
     });
@@ -88,7 +92,7 @@ ws.on('connection', (socket) => {
       }
     });
 
-    console.log('user disconnected');
+    console.log(`user ${message.sender} disconnected`);
     clients.delete(socket);
   });
 });
@@ -104,6 +108,7 @@ function getNewID(clients) {
   // let max_id = [...clients.values()].reduce((acc, curr) => {
   //   return curr.id > acc ? curr.id : acc;
   // }, 0);
-  let max_id = Math.max(...clients.values());
+  let max_id = Math.max(...[...clients.values()].map(client => client.id));
+  if (!max_id || Math.abs(max_id) === Infinity) max_id = 0;
   return max_id + 1;
 }
