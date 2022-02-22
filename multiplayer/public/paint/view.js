@@ -39,7 +39,7 @@ class View {
         // Tool selector
         document.getElementsByName('tool').forEach(button => button.addEventListener('input', (e) => {
             this.tool = e.target.value;
-            document.getElementById('grid').style.cursor = `url(../images/my${this.tool}.png) 0 32, auto`;
+            // document.getElementById('grid').style.cursor = `url(../images/my${this.tool}.png) 0 32, auto`;
         }));
 
         // On mobile devices, remove the secondary color option
@@ -52,8 +52,20 @@ class View {
 
     // Initially sets up the grid which will serve as the canvas 
     setUpGrid(rows, cols) {
-        const grid = document.createElement('div');
-        grid.id = 'grid';
+        // const grid = document.createElement('div');
+        // grid.id = 'grid';
+
+        const grid = document.getElementById("grid-canvas");
+        grid.width = 300;
+        grid.height = 300;
+        if (grid.getContext) {
+            const ctx = grid.getContext('2d');
+            ctx.fillStyle = 'rgb(200, 0, 0)';
+            ctx.fillRect(10, 10, 200, 50);
+
+            ctx.fillStyle = 'rgba(0, 0, 200, 0.5)';
+            ctx.fillRect(30, 30, 50, 50);
+        }
     
         // Allow for right click painting
         grid.addEventListener('contextmenu', (e) => {
@@ -68,22 +80,22 @@ class View {
         grid.addEventListener('touchend', (e) => this.handlePainting(e));
 
         // Create the rows
-        for (let i=0; i<rows; i++) {
-            let row = document.createElement('div')
-            row.classList.add('row');
-            grid.appendChild(row);
+        // for (let i=0; i<rows; i++) {
+        //     let row = document.createElement('div')
+        //     row.classList.add('row');
+        //     grid.appendChild(row);
 
-            // Create the cells
-            for (let j=0; j<cols; j++) {
-                let cell = document.createElement('div')
-                cell.classList.add('cell');
+        //     // Create the cells
+        //     for (let j=0; j<cols; j++) {
+        //         let cell = document.createElement('div')
+        //         cell.classList.add('cell');
 
-                // Calculate the cell number
-                let cell_num = i*cols + j
-                cell.setAttribute('cell-num', cell_num);
-                row.appendChild(cell);
-            }
-        }
+        //         // Calculate the cell number
+        //         let cell_num = i*cols + j
+        //         cell.setAttribute('cell-num', cell_num);
+        //         row.appendChild(cell);
+        //     }
+        // }
 
         return grid;
     }
