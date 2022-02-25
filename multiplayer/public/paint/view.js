@@ -3,8 +3,10 @@
  */
 class View {
     constructor(rows, cols) {
+        this.rows = rows;
+        this.cols = cols;
         this.setup();
-        this.div = this.setUpGrid(rows, cols);
+        [this.canvas, this.ctx, this.bounds] = this.setUpGrid(rows, cols);
         this.listeners = [];
         this.tool = 'brush';
     }
@@ -55,29 +57,35 @@ class View {
         // const grid = document.createElement('div');
         // grid.id = 'grid';
 
-        const grid = document.getElementById("grid-canvas");
-        grid.width = 300;
-        grid.height = 300;
-        if (grid.getContext) {
-            const ctx = grid.getContext('2d');
-            ctx.fillStyle = 'rgb(200, 0, 0)';
-            ctx.fillRect(10, 10, 200, 50);
+        const canvas = document.getElementById("grid-canvas");
+        const bounds = canvas.getBoundingClientRect();
+        let ctx = null;
+        canvas.width = 300;
+        canvas.height = 300;
+        if (canvas.getContext) {
+            ctx = canvas.getContext('2d');
+            ctx.strokeStyle = "black";
+            ctx.linewidth = 1;
+            ctx.beginPath()
+            ctx.moveTo(0, 0);
+            // ctx.fillStyle = 'rgb(200, 0, 0)';
+            // ctx.fillRect(10, 10, 50, 50);
 
-            ctx.fillStyle = 'rgba(0, 0, 200, 0.5)';
-            ctx.fillRect(30, 30, 50, 50);
+            // ctx.fillStyle = 'rgba(0, 0, 200, 0.5)';
+            // ctx.fillRect(30, 30, 50, 50);
         }
     
         // Allow for right click painting
-        grid.addEventListener('contextmenu', (e) => {
+        canvas.addEventListener('contextmenu', (e) => {
             e.preventDefault();
         });
 
-        grid.addEventListener('mousedown', (e) => this.handlePainting(e));
-        grid.addEventListener('mousemove', (e) => this.handlePainting(e));
-        grid.addEventListener('mouseup', (e) => this.handlePainting(e));
-        grid.addEventListener('touchstart', (e) => this.handlePainting(e));
-        grid.addEventListener('touchmove', (e) => this.handlePainting(e));
-        grid.addEventListener('touchend', (e) => this.handlePainting(e));
+        canvas.addEventListener('mousedown', (e) => this.handlePainting(e));
+        canvas.addEventListener('mousemove', (e) => this.handlePainting(e));
+        canvas.addEventListener('mouseup', (e) => this.handlePainting(e));
+        canvas.addEventListener('touchstart', (e) => this.handlePainting(e));
+        canvas.addEventListener('touchmove', (e) => this.handlePainting(e));
+        canvas.addEventListener('touchend', (e) => this.handlePainting(e));
 
         // Create the rows
         // for (let i=0; i<rows; i++) {
@@ -97,7 +105,7 @@ class View {
         //     }
         // }
 
-        return grid;
+        return [canvas, ctx, bounds];
     }
 
     setColor(color, button) {
@@ -106,12 +114,35 @@ class View {
 
     // Updates all of the cells in the grid based on the given data
     colorAll(data) {
-        const cells = document.querySelectorAll('.cell');
+        console.log(data);
 
-        cells.forEach((cell) => {
-            let idx = parseInt(cell.getAttribute('cell-num'));
-            cell.style.backgroundColor = data[idx];
+        const color = 'rgb(200, 0, 0)';
+        const width = this.canvas.width / this.rows;
+        const height = this.canvas.height / this.cols;
+
+        data.forEach((datum, idx) => {
+            console.log(idx);
+            const [x, y] = this.getCoordsFromCell(idx);
+            this.colorCell(x, y, width, height, color);
         });
+
+        // const cells = document.querySelectorAll('.cell');
+
+        // cells.forEach((cell) => {
+        //     let idx = parseInt(cell.getAttribute('cell-num'));
+        //     cell.style.backgroundColor = data[idx];
+        // });
+    }
+
+    colorCell(x, y, width, height, color) {
+        console.log(height);
+        this.ctx.linewidth = 1;
+        this.ctx.beginPath()
+        this.ctx.moveTo(x, y);
+        this.ctx.fillStyle = color;
+        this.ctx.fillRect(x, y, width, height);
+        // this.ctx.fillRect(10, 10, 50, 50);
+        // this.ctx.stroke();
     }
 
     // Handler for when a cell is clicked
@@ -119,7 +150,7 @@ class View {
         e.preventDefault();
         // console.log(e.target.style.backgroundColor);
 
-        if (!e.target.classList.contains('cell')) {
+        if (!e.target.id === "grid-canvas") {
             return;
         }
 
@@ -144,7 +175,9 @@ class View {
             return;
         }
 
-        const cell_num = parseInt(document.elementFromPoint(e.clientX, e.clientY).getAttribute('cell-num'));
+        // const cell_num = parseInt(document.elementFromPoint(e.clientX, e.clientY).getAttribute('cell-num'));
+        const cell_num = this.getCellFromCoords(e.clientX, e.clientY);
+        // console.log(cell_num);
         const button = e.buttons;
 
         // Dropper tool to match colors
@@ -158,11 +191,27 @@ class View {
             const color = document.getElementById(`colorpicker${button}`).value;
             const size = document.getElementById('brushsize').value;
             this.updateListeners({ tool: this.tool, type: type, cell_num: cell_num, color: color, size: size, button: button });
+            // console.log(e.clientX - this.bounds.left, e.clientY - this.bounds.top);
+            this.ctx.lineTo(e.clientX - this.bounds.left, e.clientY - this.bounds.top);
+            this.ctx.stroke();
         }
 
         // if (button == 2) {
         //     const color = document.getElementById(`colorpicker${button}`).value;
         //     this.updateListeners({ tool: this.tool, type: type, cell_num: cell_num, color: color });
         // }
+    }
+
+    getCellFromCoords(x, y) {
+        const row = Math.floor((x - this.bounds.left) / this.canvas.width * this.rows);
+        const col = Math.floor((y - this.bounds.top) / this.canvas.height * this.cols);
+        
+        return row + this.rows * col;
+    }
+
+    getCoordsFromCell(num) {
+        const x = 0;
+        const y = 0;
+        return [x, y];
     }
 }

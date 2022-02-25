@@ -4,8 +4,8 @@
 
 window.onload = () => {
     // settings
-    const rows = 64;
-    const cols = 64;
+    const rows = 3;
+    const cols = 3;
 
     // Setup MVC
     const model = new Model(rows, cols);
@@ -13,5 +13,5 @@ window.onload = () => {
     const control = new Controller(model, view);
 
     // Load into DOM
-    document.getElementById('grid-wrapper').append(view.div);
+    // document.getElementById('grid-wrapper').append(view.div);
 };

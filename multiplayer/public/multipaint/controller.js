@@ -117,7 +117,7 @@ class Controller {
             return;
         }
 
-        if (messageBody.type === "cursor" && messageBody.sender != this.view.getCursor().id) {
+        if (messageBody.type === "cursor" && messageBody.sender != this.view.id) {
             this.view.moveCursor(messageBody.sender, messageBody.name, messageBody.color, messageBody.x, messageBody.y);
         }
 
@@ -132,7 +132,7 @@ class Controller {
         // }
 
         // if (messageBody.type === "paint") {
-        if (messageBody.type === "paint" && messageBody.sender != this.view.getCursor().id) {
+        if (messageBody.type === "paint" && messageBody.sender != this.view.id) {
             // console.log(messageBody.sender);
             // console.log(this.view.getId());
             let changes = messageBody.changes;
