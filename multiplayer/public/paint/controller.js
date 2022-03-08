@@ -40,11 +40,15 @@ class Controller {
         if (e.type === 'click') {
             this.model.colorCell(e.cell_num, e.color, e.size);
             this.model.setLast(e.cell_num);
-            this.view.colorAll(this.model.getData());
+            // this.view.colorAll(this.model.getData());
+            this.view.colorSome(this.model.getChanges());
+            this.model.clearChanges();
         } else if (e.type === 'drag') {
             this.model.line(this.model.getLast(), e.cell_num, e.color, e.size);
             this.model.setLast(e.cell_num);
-            this.view.colorAll(this.model.getData());
+            // this.view.colorAll(this.model.getData());
+            this.view.colorSome(this.model.getChanges());
+            this.model.clearChanges();
         } else if (e.type === 'stop') {
             this.model.setLast(null);
         }

@@ -114,16 +114,12 @@ class View {
 
     // Updates all of the cells in the grid based on the given data
     colorAll(data) {
-        console.log(data);
-
-        const color = 'rgb(200, 0, 0)';
         const width = this.canvas.width / this.rows;
         const height = this.canvas.height / this.cols;
 
         data.forEach((datum, idx) => {
-            console.log(idx);
             const [x, y] = this.getCoordsFromCell(idx);
-            this.colorCell(x, y, width, height, color);
+            this.colorCell(x, y, width, height, datum);
         });
 
         // const cells = document.querySelectorAll('.cell');
@@ -134,8 +130,20 @@ class View {
         // });
     }
 
+    // Updates all of the cells in the grid based on the given data
+    colorSome(data) {
+        console.log(data);
+        const width = this.canvas.width / this.rows;
+        const height = this.canvas.height / this.cols;
+
+        data.forEach(cell => {
+            const [x, y] = this.getCoordsFromCell(cell.cell_num);
+            this.colorCell(x, y, width, height, cell.color);
+        });
+    }
+
     colorCell(x, y, width, height, color) {
-        console.log(height);
+        // console.log(height);
         this.ctx.linewidth = 1;
         this.ctx.beginPath()
         this.ctx.moveTo(x, y);
@@ -192,8 +200,8 @@ class View {
             const size = document.getElementById('brushsize').value;
             this.updateListeners({ tool: this.tool, type: type, cell_num: cell_num, color: color, size: size, button: button });
             // console.log(e.clientX - this.bounds.left, e.clientY - this.bounds.top);
-            this.ctx.lineTo(e.clientX - this.bounds.left, e.clientY - this.bounds.top);
-            this.ctx.stroke();
+            // this.ctx.lineTo(e.clientX - this.bounds.left, e.clientY - this.bounds.top);
+            // this.ctx.stroke();
         }
 
         // if (button == 2) {
@@ -203,6 +211,8 @@ class View {
     }
 
     getCellFromCoords(x, y) {
+        console.log(x, y);
+        console.log(this.bounds);
         const row = Math.floor((x - this.bounds.left) / this.canvas.width * this.rows);
         const col = Math.floor((y - this.bounds.top) / this.canvas.height * this.cols);
         
@@ -210,8 +220,16 @@ class View {
     }
 
     getCoordsFromCell(num) {
-        const x = 0;
-        const y = 0;
+        // Get coordinate for cell
+        let x = num % this.cols;
+        let y = (num - x) / this.cols;
+        // console.log(x, y);
+
+        // Adjust to actual coordinate
+        x *= this.canvas.width / this.rows;     // Multiply by width of row
+        y *= this.canvas.height / this.cols;    // Multiply by height of col
+        // console.log(x, y);
+
         return [x, y];
     }
 }
