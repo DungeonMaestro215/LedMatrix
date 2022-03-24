@@ -1,7 +1,8 @@
 // Import the things
 const http = require('http');
 const express = require('express');         // express web framework
-const bodyParser = require("body-parser");  // Request body parser
+// const bodyParser = require("body-parser");  // Request body parser
+const { check } = require('express-validator');  // Sanitizer
 const cors = require('cors');               // CORS
 const path = require('path');               // Simplifies file paths
 const favicon = require('serve-favicon');   // Serves the favicon
@@ -15,8 +16,9 @@ const fav_path = path.join(__dirname, "public", "images", "favicon.ico");
 // Initialize the app
 const app = express();
 const server = http.createServer(app);
-const jsonParser = bodyParser.json();
-app.use(jsonParser);
+// const jsonParser = bodyParser.json();
+// app.use(jsonParser);
+app.use(express.json());
 app.use(cors());
 app.use(express.static(html_path));
 app.use(favicon(fav_path));
@@ -39,8 +41,11 @@ let message = {
 app.get('/message/messageget', (req, res) => {
   res.send(message);
 });
-app.post('/message/messagepost', (req, res) => {
+app.post('/message/messagepost', 
+    [check("message").isLength({ max: 80 }).trim().escape(),
+     check("color").trim().escape()], (req, res) => {
   message = req.body;
+  console.log(message);
   res.send("recieved");
 });
 
@@ -127,4 +132,14 @@ function getNewID(clients) {
   let max_id = Math.max(...[...clients.values()].map(client => client.id));
   if (!max_id || Math.abs(max_id) === Infinity) max_id = 0;
   return max_id + 1;
+}
+
+https://www.educative.io/edpresso/how-to-escape-unescape-html-characters-in-string-in-javascript
+function escape(htmlStr) {
+   return htmlStr.replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#39;");        
+
 }

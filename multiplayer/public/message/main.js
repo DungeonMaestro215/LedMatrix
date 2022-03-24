@@ -22,13 +22,11 @@ window.onload = function () {
         axios({
             method: 'post',
             url: 'https://afternoon-plateau-82522.herokuapp.com/message/messagepost',
+            // url: 'http://localhost:3000/message/messagepost',
             data: {
                 message: message,
                 color: color
-            },
-            // headers: {
-            //     'Content-Type': 'text/plain;charset=utf-8',
-            // }
+            }
         })
     });
 
