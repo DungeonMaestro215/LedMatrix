@@ -1,6 +1,7 @@
 // Import the things
 const http = require('http');
 const express = require('express');         // express web framework
+const bodyParser = require("body-parser");  // Request body parser
 const cors = require('cors');               // CORS
 const path = require('path');               // Simplifies file paths
 const favicon = require('serve-favicon');   // Serves the favicon
@@ -14,6 +15,8 @@ const fav_path = path.join(__dirname, "public", "images", "favicon.ico");
 // Initialize the app
 const app = express();
 const server = http.createServer(app);
+const jsonParser = bodyParser.json();
+app.use(jsonParser);
 app.use(cors());
 app.use(express.static(html_path));
 app.use(favicon(fav_path));
@@ -26,6 +29,16 @@ const clients = new Map();
 // Send the page
 app.get('/ascii', (req, res) => {
   res.send(cool())
+});
+
+// Simple message thing
+let message = "TEST 1 2 3"
+app.get('/message/messageget', (req, res) => {
+  res.send(message);
+});
+app.post('/message/messagepost', (req, res) => {
+  message = req.body.message;
+  res.send("recieved");
 });
 
 // Start serving

@@ -2,7 +2,6 @@
 
 # Imports
 import time
-import enum
 import board
 import displayio
 from adafruit_matrixportal.matrix import Matrix
@@ -51,17 +50,17 @@ def set_pixel(bitmap, pixel_num, color):
     bitmap[col, row] = color
 
 #set_pixel(bitmap, 1024, 1)
-bitmap[0, 16] = Color.RED
-bitmap[0, 17] = Color.GREEN
-bitmap[0, 40] = Color.BLUE
+bitmap[63, 16] = Color.BLUE
+bitmap[0, 15] = Color.RED
+bitmap[0, 16] = Color.GREEN
 
 
 print(bitmap.width, bitmap.height)
 
 # Draw even more pixels
-for x in range(32, 40):
-    for y in range(4, 9):
-        bitmap[x, y] = 1
+#for x in range(32, 40):
+    #for y in range(4, 9):
+        #bitmap[x, y] = 1
 
 # Loop forever to keep image
 while True:
