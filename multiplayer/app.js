@@ -32,12 +32,15 @@ app.get('/ascii', (req, res) => {
 });
 
 // Simple message thing
-let message = "TEST 1 2 3"
+let message = {
+  message: "DEFAULT",
+  color: "#ffffff"
+}
 app.get('/message/messageget', (req, res) => {
   res.send(message);
 });
 app.post('/message/messagepost', (req, res) => {
-  message = req.body.message;
+  message = req.body;
   res.send("recieved");
 });
 
