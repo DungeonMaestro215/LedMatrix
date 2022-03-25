@@ -42,7 +42,7 @@ app.get('/message/messageget', (req, res) => {
   res.send(message);
 });
 app.post('/message/messagepost', 
-    [check("message").isLength({ max: 80 }).trim().escape(),
+    [check("message").isLength({ max: 80 }).trim(),
      check("color").trim()], (req, res) => {
   message.color = req.body.color;
   message.message = req.body.message.substring(0, 512);
