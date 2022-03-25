@@ -28,6 +28,8 @@ window.onload = function () {
                 color: color
             }
         })
+
+        messageInput.value = "";
     });
 
 };

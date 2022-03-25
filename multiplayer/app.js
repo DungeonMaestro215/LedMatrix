@@ -43,7 +43,7 @@ app.get('/message/messageget', (req, res) => {
 });
 app.post('/message/messagepost', 
     [check("message").isLength({ max: 80 }).trim().escape(),
-     check("color").trim().escape()], (req, res) => {
+     check("color").trim()], (req, res) => {
   message = req.body;
   console.log(message);
   res.send("recieved");
