@@ -28,3 +28,19 @@
 #sendButton {
     width: 93%;
 }
+
+@media only screen and (max-width: 768px) {
+    body {
+        background-color: aquamarine;
+    }
+    #messageInput {
+        height: 75px;
+        width: 45%;
+    }
+
+    #messageColor {
+        width: 15%;
+        height: 103px;
+        /* border: none; */
+    }
+}

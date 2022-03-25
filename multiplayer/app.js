@@ -44,7 +44,8 @@ app.get('/message/messageget', (req, res) => {
 app.post('/message/messagepost', 
     [check("message").isLength({ max: 80 }).trim().escape(),
      check("color").trim()], (req, res) => {
-  message = req.body;
+  message.color = req.body.color;
+  message.message = req.body.message.substring(0, 100);
   console.log(message);
   res.send("recieved");
 });
