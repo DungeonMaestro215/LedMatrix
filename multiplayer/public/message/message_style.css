@@ -1,12 +1,27 @@
-#top {
+body {
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+#sendDialog {
+    position: absolute;
+    background-color: darkgreen;
+    padding: 20px;
+    border: 1px white solid;
+    border-radius: 10px;
+    box-shadow: 0 0 10px black;
+    top: 20px;
+    visibility: visible;
+    transition: .2s ease;
+}
+
+#sendDialog p {
+    margin: 0;
+}
+
 #inputContainer {
-    margin: auto;
     width: 60%;
     display: flex;
     flex-direction: column;
@@ -39,4 +54,43 @@
 
 #sendButton {
     width: 100%;
+}
+
+.flip {
+    animation-name: flip;
+    animation-duration: 1s;
+    /* animation-iteration-count: 1; */
+    animation-fill-mode: forwards;
+}
+
+.flipback {
+    animation-name: flipback;
+    animation-duration: 1s;
+    /* animation-iteration-count: 1; */
+    animation-fill-mode: forwards;
+}
+
+@keyframes flip {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(180deg);
+    }
+}
+
+@keyframes flipback {
+    from {
+        transform: rotate(1620deg);
+    }
+
+    to {
+        transform: rotate(0deg);
+    }
+}
+
+.hidden {
+    opacity: 0 !important;
+    visibility: hidden !important;
 }

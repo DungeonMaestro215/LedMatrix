@@ -12,14 +12,15 @@
     <title>Send a Message!</title>
 </head>
 <body>
-    <div id="top">
-        <div id="inputContainer">
-            <div id="messageLine">
-                <input id="messageInput" type="text" class="defaultInput">
-                <input id="messageColor" type="color"  value="#99badd">
-            </div>
-            <button id="sendButton" class="defaultButton">Send</button>
+    <div id="sendDialog" class="hidden">
+        <p>Message Sent!</p>
+    </div>
+    <div id="inputContainer">
+        <div id="messageLine">
+            <input id="messageInput" type="text" class="defaultInput">
+            <input id="messageColor" type="color"  value="#99badd">
         </div>
+        <button id="sendButton" class="defaultButton">Send</button>
     </div>
 
     <script src="./main.js"></script>
