@@ -6,41 +6,37 @@
 }
 
 #inputContainer {
-    margin: 20%;
+    margin: auto;
     width: 60%;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     justify-content: center;
-    text-align: center;
+    align-items: center;
+}
+
+#messageLine {
+    height: 75px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #messageInput {
-    height: 75px;
-    width: 69%;
+    display: flex;
+    height: 100%;
+    width: calc(100% - 75px);
+    /* flex-grow: 1; */
+    box-sizing: border-box;
 }
 
 #messageColor {
-    width: 15%;
-    height: 103px;
-    /* border: none; */
+    display: flex;
+    height: 100%;
+    width: 75px;
+    /* flex-shrink: 0; */
 }
 
 #sendButton {
-    width: 93%;
-}
-
-@media only screen and (max-width: 768px) {
-    body {
-        background-color: aquamarine;
-    }
-    #messageInput {
-        height: 75px;
-        width: 40%;
-    }
-
-    #messageColor {
-        width: 15%;
-        height: 103px;
-        /* border: none; */
-    }
+    width: 100%;
 }
