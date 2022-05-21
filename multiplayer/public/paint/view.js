@@ -175,7 +175,6 @@ class View {
 
         // const cell_num = parseInt(document.elementFromPoint(e.clientX, e.clientY).getAttribute('cell-num'));
         const cell_num = this.getCellFromCoords(e.clientX, e.clientY);
-        // console.log(cell_num);
         const button = e.buttons;
 
         // Dropper tool to match colors
@@ -201,14 +200,11 @@ class View {
     }
 
     getCellFromCoords(x, y) {
-        const row = Math.floor((x - this.bounds.left) / this.canvas.width * this.rows);
-        const col = Math.floor((y - this.bounds.top) / this.canvas.height * this.cols);
+        // Sometimes the edges go just out of bounds of the grid. This makes sure no negatives.
+        const row = Math.max(0, Math.floor((x - this.bounds.left) / this.canvas.width * this.rows));
+        const col = Math.max(0, Math.floor((y - this.bounds.top) / this.canvas.height * this.cols));
 
         let cell_num = row + this.rows * col;
-
-        // Going off the top edge of the grid returns cells -3, -2, and -1. Idk why this is,
-        // but this will fix it.
-        cell_num = cell_num < 0 ? cell_num + 3 : cell_num;
 
         return cell_num;
     }
