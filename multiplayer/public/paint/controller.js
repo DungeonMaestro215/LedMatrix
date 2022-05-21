@@ -32,7 +32,7 @@ class Controller {
     // Clear the model and update the view
     handleClear = (e) => {
         this.model.colorAll('#ffffff');
-        this.view.colorAll(this.model.getChanges());
+        this.view.colorAll(this.model.getData());
     }
 
     // Paint the cell and any neighbors, then update the view
@@ -60,8 +60,6 @@ class Controller {
     }
 
     handleDropper = (e) => {
-        // console.log(e.cell_num);
-        // console.log(this.model.getData()[e.cell_num]);
         let color = this.model.getData()[e.cell_num];
         let button = e.button;
         this.view.setColor(color, button);

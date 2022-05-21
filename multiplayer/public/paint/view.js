@@ -5,6 +5,7 @@ class View {
     constructor(rows, cols) {
         this.rows = rows;
         this.cols = cols;
+        this.gridsize = 640;
         this.setup();
         [this.canvas, this.ctx] = this.setUpGrid(rows, cols);
         this.listeners = [];
@@ -34,6 +35,7 @@ class View {
     setup() {
         document.getElementById('clear').addEventListener('click', () => this.updateListeners({ tool: 'clear' }));
         document.getElementById('test').addEventListener('click', () => this.updateListeners({ tool: 'test' }));
+        document.getElementById('swap').addEventListener('click', this.swapColors);
         document.getElementById('brushsize').oninput = function() {
             document.getElementById('brushsize-value').innerHTML = this.value;
         };
@@ -46,35 +48,24 @@ class View {
 
         // On mobile devices, remove the secondary color option
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            document.getElementById('colorpicker2').remove();
-            document.getElementById('colorpicker2-label').remove();
-            document.getElementById('colorpicker1-label').innerHTML = "Color";
+            // document.getElementById('colorpicker2').remove();
+            // document.getElementById('colorpicker2-label').remove();
+            // document.getElementById('colorpicker1-label').innerHTML = "Color";
+
+            this.gridsize = 320;
         }
     }
 
     // Initially sets up the grid which will serve as the canvas 
     setUpGrid(rows, cols) {
-        // const grid = document.createElement('div');
-        // grid.id = 'grid';
-
         const canvas = document.getElementById("grid-canvas");
         let ctx = null;
-        canvas.width = 640;
-        canvas.height = 640;
-
-        // const bounds = canvas.getBoundingClientRect();
+        canvas.width = this.gridsize;
+        canvas.height = this.gridsize;
 
         if (canvas.getContext) {
             ctx = canvas.getContext('2d');
             ctx.strokeStyle = "black";
-            // ctx.linewidth = 1;
-            ctx.beginPath()
-            ctx.moveTo(0, 0);
-            // ctx.fillStyle = 'rgb(200, 0, 0)';
-            // ctx.fillRect(10, 10, 50, 50);
-
-            // ctx.fillStyle = 'rgba(0, 0, 200, 0.5)';
-            // ctx.fillRect(30, 30, 50, 50);
         }
     
         // Allow for right click painting
@@ -82,30 +73,11 @@ class View {
             e.preventDefault();
         });
 
-        canvas.addEventListener('mousedown', (e) => this.handlePainting(e));
-        canvas.addEventListener('mousemove', (e) => this.handlePainting(e));
-        canvas.addEventListener('mouseup', (e) => this.handlePainting(e));
-        canvas.addEventListener('touchstart', (e) => this.handlePainting(e));
-        canvas.addEventListener('touchmove', (e) => this.handlePainting(e));
-        canvas.addEventListener('touchend', (e) => this.handlePainting(e));
-
-        // Create the rows
-        // for (let i=0; i<rows; i++) {
-        //     let row = document.createElement('div')
-        //     row.classList.add('row');
-        //     grid.appendChild(row);
-
-        //     // Create the cells
-        //     for (let j=0; j<cols; j++) {
-        //         let cell = document.createElement('div')
-        //         cell.classList.add('cell');
-
-        //         // Calculate the cell number
-        //         let cell_num = i*cols + j
-        //         cell.setAttribute('cell-num', cell_num);
-        //         row.appendChild(cell);
-        //     }
-        // }
+        // Events
+        canvas.addEventListener('pointerdown', (e) => this.handlePainting(e));
+        canvas.addEventListener('pointermove', (e) => this.handlePainting(e));
+        canvas.addEventListener('pointerup', (e) => this.stopPainting());
+        canvas.addEventListener('pointerleave', (e) => this.stopPainting());
 
         return [canvas, ctx];
     }
@@ -118,9 +90,17 @@ class View {
         document.getElementById(`colorpicker${button}`).value = color;
     }
 
+    swapColors() {
+        const colorpicker1 = document.getElementById('colorpicker1');
+        const colorpicker2 = document.getElementById('colorpicker2');
+
+        const temp = colorpicker1.value;
+        colorpicker1.value = colorpicker2.value;
+        colorpicker2.value = temp;
+    }
+
     // Updates all of the cells in the grid based on the given data
     colorAll(data) {
-        // const color = 'rgb(200, 0, 0)';
         const width = this.canvas.width / this.rows;
         const height = this.canvas.height / this.cols;
 
@@ -128,17 +108,9 @@ class View {
             const [x, y] = this.getCoordsFromCell(idx);
             this.colorCell(x, y, width, height, datum);
         });
-
-        // const cells = document.querySelectorAll('.cell');
-
-        // cells.forEach((cell) => {
-        //     let idx = parseInt(cell.getAttribute('cell-num'));
-        //     cell.style.backgroundColor = data[idx];
-        // });
     }
     
     colorSome(data) {
-        // const color = 'rgb(200, 0, 0)';
         const width = this.canvas.width / this.rows;
         const height = this.canvas.height / this.cols;
 
@@ -149,7 +121,6 @@ class View {
     }
 
     colorCell(x, y, width, height, color) {
-        // console.log(x, y, width, height);
         this.ctx.beginPath()
         this.ctx.fillStyle = color;
         this.ctx.fillRect(x, y, width, height);
@@ -158,73 +129,34 @@ class View {
 
     // Handler for when a cell is clicked
     handlePainting(e) {
-        e.preventDefault();
-        // console.log(e.target.style.backgroundColor);
-        // console.log(e.target);
-        // console.log(this.ctx);
-
-        if (e.target.id !== "grid-canvas") {
-            return;
-        }
+        if (e.target.id !== "grid-canvas") return;
+        if (!(e.buttons === 1 || e.buttons == 2)) return;
 
         let type = 'click';
-        if (e.type === 'mousemove' || e.type === 'touchmove') type = 'drag';
-        else if (e.type === 'mouseup' || e.type === 'touchend') {
-            type = 'stop';
-            this.updateListeners({ tool: this.tool, type: type });
-        }
+        if (e.type === 'pointermove') type = 'drag';
 
-        if (e.touches) {
-            try {
-                const cell_num = parseInt(document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY).getAttribute('cell-num'));
-                const button = 1;
-                const color = document.getElementById(`colorpicker${button}`).value;
-                const size = document.getElementById('brushsize').value;
-                this.updateListeners({ tool: this.tool, type: type, cell_num: cell_num, color: color, size: size, button: button });
-            } catch (TypeError) {
-                console.log("Out of Bounds");
-            }
+        const clamp = (num, min, max) => Math.max(Math.min(num, max), min);
 
-            return;
-        }
-
-        // const cell_num = parseInt(document.elementFromPoint(e.clientX, e.clientY).getAttribute('cell-num'));
-        const cell_num = this.getCellFromCoords(e.offsetX, e.offsetY);
+        const cell_num = this.getCellFromCoords(clamp(e.offsetX, 0, this.gridsize-1), clamp(e.offsetY, 0, this.gridsize-1));
         const button = e.buttons;
+        const color = document.getElementById(`colorpicker${button}`).value;
+        const size = document.getElementById('brushsize').value;
+        this.updateListeners({ tool: this.tool, type: type, cell_num: cell_num, color: color, size: size, button: button });
+    }
 
-        // Dropper tool to match colors
-        // if (this.tool === 'dropper') {
-        //     const color = document.getElementById(`colorpicker${button}`).value;
-        //     return
-        // }
-
-        // if (button == 1) {
-        if (button == 1 || button == 2) {
-            const color = document.getElementById(`colorpicker${button}`).value;
-            const size = document.getElementById('brushsize').value;
-            this.updateListeners({ tool: this.tool, type: type, cell_num: cell_num, color: color, size: size, button: button });
-            // console.log(e.clientX - this.bounds.left, e.clientY - this.bounds.top);
-            // this.ctx.lineTo(e.clientX - this.bounds.left, e.clientY - this.bounds.top);
-            // this.ctx.stroke();
-        }
-
-        // if (button == 2) {
-        //     const color = document.getElementById(`colorpicker${button}`).value;
-        //     this.updateListeners({ tool: this.tool, type: type, cell_num: cell_num, color: color });
-        // }
+    stopPainting() {
+        this.updateListeners({ tool: this.tool, type: 'stop' });
     }
 
     getCellFromCoords(x, y) {
         // Sometimes the edges go just out of bounds of the grid. This makes sure no negatives.
-        // const row = Math.max(0, Math.floor((x - this.bounds.left) / this.canvas.width * this.rows));
-        // const col = Math.max(0, Math.floor((y - this.bounds.top) / this.canvas.height * this.cols));
-        const row = Math.max(0, Math.floor(x / this.canvas.width * this.rows));
-        const col = Math.max(0, Math.floor(y / this.canvas.height * this.cols));
+        const row = Math.floor(x / this.canvas.width * this.rows);
+        const col = Math.floor(y / this.canvas.height * this.cols);
+
+        console.log(x, y, row, col);
 
         let cell_num = row + this.rows * col;
         
-        // console.log(x, y, row, col, cell_num);
-
         return cell_num;
     }
 

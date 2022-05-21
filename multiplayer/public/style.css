@@ -58,6 +58,7 @@ html, body {
 
 #grid-canvas {
     background-color: white;
+    touch-action: none;
     /* border: 1px black solid; */
     /* cursor: url('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/313/paintbrush_1f58c-fe0f.png') 0 100, auto; */
     /* cursor: url(images/mybrush.png) 0 32, auto; */
@@ -77,6 +78,7 @@ html, body {
 }
 
 #settings-wrapper {
+    max-width: 90%;
     padding: 10px;
 }
 
@@ -114,15 +116,6 @@ img {
     background-color: darkblue;
 } */
 
-/* mobile stuff */
-@media (max-width: 500px) {
-    #grid-wrapper {
-        height: 322px;
-    }
-
-    .cell {
-        width: 5px;
-        height: 5px;
-    }
-
+#name {
+    max-width: 90%;
 }
