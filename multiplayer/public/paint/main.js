@@ -4,8 +4,8 @@
 
 window.onload = () => {
     // settings
-    const rows = 3;
-    const cols = 3;
+    const rows = 640;
+    const cols = 640;
 
     // Setup MVC
     const model = new Model(rows, cols);

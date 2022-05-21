@@ -10,6 +10,7 @@ class Model {
         this.colorAll('#ffffff');
         this.listeners = [];
         this.last = 0;
+        this.changes = [];
     }
 
     // Send back the data

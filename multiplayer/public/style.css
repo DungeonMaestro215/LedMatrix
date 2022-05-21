@@ -58,7 +58,7 @@ html, body {
 
 #grid-canvas {
     background-color: white;
-    border: 1px black solid;
+    /* border: 1px black solid; */
     height: 300px;
     width: 300px;
     /* cursor: url('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/313/paintbrush_1f58c-fe0f.png') 0 100, auto; */

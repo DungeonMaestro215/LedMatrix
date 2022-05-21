@@ -1,6 +1,8 @@
 Mix colors
 
 Paint:
+    Performance issues with many cells in grid
+
     X Variable size
     X bucket
     X make work on mobile

@@ -135,12 +135,11 @@ function getNewID(clients) {
   return max_id + 1;
 }
 
-https://www.educative.io/edpresso/how-to-escape-unescape-html-characters-in-string-in-javascript
+// https://www.educative.io/edpresso/how-to-escape-unescape-html-characters-in-string-in-javascript
 function escape(htmlStr) {
    return htmlStr.replace(/&/g, "&amp;")
          .replace(/</g, "&lt;")
          .replace(/>/g, "&gt;")
          .replace(/"/g, "&quot;")
          .replace(/'/g, "&#39;");        
-
 }

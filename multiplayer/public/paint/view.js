@@ -114,16 +114,14 @@ class View {
 
     // Updates all of the cells in the grid based on the given data
     colorAll(data) {
-        console.log(data);
-
-        const color = 'rgb(200, 0, 0)';
+        // const color = 'rgb(200, 0, 0)';
         const width = this.canvas.width / this.rows;
         const height = this.canvas.height / this.cols;
 
         data.forEach((datum, idx) => {
-            console.log(idx);
+            // console.log(datum);
             const [x, y] = this.getCoordsFromCell(idx);
-            this.colorCell(x, y, width, height, color);
+            this.colorCell(x, y, width, height, datum);
         });
 
         // const cells = document.querySelectorAll('.cell');
@@ -135,22 +133,22 @@ class View {
     }
 
     colorCell(x, y, width, height, color) {
-        console.log(height);
         this.ctx.linewidth = 1;
         this.ctx.beginPath()
-        this.ctx.moveTo(x, y);
+        // this.ctx.moveTo(x, y);
         this.ctx.fillStyle = color;
         this.ctx.fillRect(x, y, width, height);
         // this.ctx.fillRect(10, 10, 50, 50);
-        // this.ctx.stroke();
+        this.ctx.stroke();
     }
 
     // Handler for when a cell is clicked
     handlePainting(e) {
         e.preventDefault();
         // console.log(e.target.style.backgroundColor);
+        // console.log(e.target);
 
-        if (!e.target.id === "grid-canvas") {
+        if (e.target.id !== "grid-canvas") {
             return;
         }
 
@@ -192,8 +190,8 @@ class View {
             const size = document.getElementById('brushsize').value;
             this.updateListeners({ tool: this.tool, type: type, cell_num: cell_num, color: color, size: size, button: button });
             // console.log(e.clientX - this.bounds.left, e.clientY - this.bounds.top);
-            this.ctx.lineTo(e.clientX - this.bounds.left, e.clientY - this.bounds.top);
-            this.ctx.stroke();
+            // this.ctx.lineTo(e.clientX - this.bounds.left, e.clientY - this.bounds.top);
+            // this.ctx.stroke();
         }
 
         // if (button == 2) {
@@ -205,13 +203,19 @@ class View {
     getCellFromCoords(x, y) {
         const row = Math.floor((x - this.bounds.left) / this.canvas.width * this.rows);
         const col = Math.floor((y - this.bounds.top) / this.canvas.height * this.cols);
-        
-        return row + this.rows * col;
+
+        let cell_num = row + this.rows * col;
+
+        // Going off the top edge of the grid returns cells -3, -2, and -1. Idk why this is,
+        // but this will fix it.
+        cell_num = cell_num < 0 ? cell_num + 3 : cell_num;
+
+        return cell_num;
     }
 
     getCoordsFromCell(num) {
-        const x = 0;
-        const y = 0;
+        const x = (num % this.rows) * (this.canvas.width / this.rows);
+        const y = Math.floor(num / this.cols) * (this.canvas.height / this.cols);
         return [x, y];
     }
 }
