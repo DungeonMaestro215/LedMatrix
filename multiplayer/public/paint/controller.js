@@ -12,7 +12,7 @@ class Controller {
         this.view = view;
 
         view.addListener((e) => this.handleEvent(e));
-        // console.log(this.model.getData());
+        console.log(this.model.getData());
         this.view.colorAll(this.model.getData());
     }
 
@@ -32,7 +32,7 @@ class Controller {
     // Clear the model and update the view
     handleClear = (e) => {
         this.model.colorAll('#ffffff');
-        this.view.colorAll(this.model.getData());
+        this.view.colorAll(this.model.getChanges());
     }
 
     // Paint the cell and any neighbors, then update the view
@@ -40,11 +40,13 @@ class Controller {
         if (e.type === 'click') {
             this.model.colorCell(e.cell_num, e.color, e.size);
             this.model.setLast(e.cell_num);
-            this.view.colorAll(this.model.getData());
+            this.view.colorSome(this.model.getChanges());
+            this.model.clearChanges();
         } else if (e.type === 'drag') {
             this.model.line(this.model.getLast(), e.cell_num, e.color, e.size);
             this.model.setLast(e.cell_num);
-            this.view.colorAll(this.model.getData());
+            this.view.colorSome(this.model.getChanges());
+            this.model.clearChanges();
         } else if (e.type === 'stop') {
             this.model.setLast(null);
         }
@@ -53,7 +55,8 @@ class Controller {
     // Floodfill the model, the update the view
     handleBucket = (e) => {
         this.model.fill(e.cell_num, e.color);
-        this.view.colorAll(this.model.getData());
+        this.view.colorSome(this.model.getChanges());
+        this.model.clearChanges();
     }
 
     handleDropper = (e) => {
