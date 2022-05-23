@@ -37,6 +37,7 @@ class Controller {
             bucket: this.handleBucket,
             dropper: this.handleDropper,
             cursor: this.handleCursor,
+            blur: this.handleBlur,
         }
 
         event_list[e.tool](e);
@@ -52,7 +53,6 @@ class Controller {
     // Paint the cell and any neighbors, then update the view
     handleBrush = (e) => {
         if (e.type === 'click') {
-            console.log(e.cell_num);
             this.model.colorCell(e.cell_num, e.color, e.size);
             this.model.setLast(e.cell_num);
             this.view.colorSome(this.model.getChanges());
@@ -60,7 +60,6 @@ class Controller {
             this.ws.send(JSON.stringify({ type: "paint", changes: this.model.getChanges() }));
             this.model.clearChanges();
         } else if (e.type === 'drag') {
-            console.log(e.cell_num);
             this.model.line(this.model.getLast(), e.cell_num, e.color, e.size);
             this.model.setLast(e.cell_num);
             this.view.colorSome(this.model.getChanges());
@@ -88,6 +87,15 @@ class Controller {
 
     handleCursor = (e) => {
         this.ws.send(JSON.stringify(e.message));
+    }
+
+    handleBlur = (e) => {
+        if (e.type === 'stop') return;
+
+        this.model.blurCell(e.cell_num, e.size);
+        this.view.colorSome(this.model.getChanges());
+        this.ws.send(JSON.stringify({ type: "paint", changes: this.model.getChanges() }));
+        this.model.clearChanges();
     }
 
     handleTest = (e) => {

@@ -61,7 +61,7 @@ class Model {
             this.changes.push({ cell_num: cell_num, color: color });
         }
 
-        // Recursivel color around the cell
+        // Recursively color around the cell
         // Also obey the boundaries of the box
         if (size <= 1) {
             return;
@@ -191,4 +191,102 @@ class Model {
         this.floodFill(cell_num+this.cols, old_color, new_color);
         this.floodFill(cell_num-this.cols, old_color, new_color);
     }
+
+    oldfloodFill(cell_num, old_color, new_color) {
+        if (cell_num < 0 || cell_num > this.data.length) {
+            return;
+        }
+        
+        if (this.data[cell_num] != old_color || this.data[cell_num] == new_color) {
+            return;
+        }
+
+        this.data[cell_num] = new_color;
+        this.changes.push({ cell_num: cell_num, color: new_color });
+
+        if (cell_num % this.cols !== this.cols-1) {
+            this.floodFill(cell_num+1, old_color, new_color);
+        }
+        
+        if (cell_num % this.cols !== 0) {
+            this.floodFill(cell_num-1, old_color, new_color);
+        }
+        this.floodFill(cell_num+this.cols, old_color, new_color);
+        this.floodFill(cell_num-this.cols, old_color, new_color);
+    }
+
+    // Blur
+    blurCell(cell_num, size) {
+        // OOB?
+        if (cell_num < 0 || cell_num > this.data.length) {
+            return;
+        }
+
+        // Calculate average of (8) neighbors
+        const neighbors = [];
+
+        // Recursively blur around the cell
+        // Also obey the boundaries of the box
+        if (size < 1) {
+            return;
+        } else {
+            if (cell_num % this.cols !== this.cols-1) {
+                neighbors.push(this.data[cell_num+1]);
+                // neighbors.push(cell_num+1);
+                this.blurCell(cell_num+1, size-1);
+            }
+
+            if (cell_num % this.cols !== 0) {
+                neighbors.push(this.data[cell_num-1]);
+                // neighbors.push(cell_num-1);
+                this.blurCell(cell_num-1, size-1);
+            }
+
+            if (Math.floor(cell_num / this.rows) !== this.rows-1) {
+                // neighbors.push(cell_num+this.cols);
+                neighbors.push(this.data[cell_num+this.cols]);
+                this.blurCell(cell_num+this.cols, size-1);
+            }
+
+            if (Math.floor(cell_num / this.rows) !== 0) {
+                // neighbors.push(cell_num-this.cols);
+                neighbors.push(this.data[cell_num-this.cols]);
+                this.blurCell(cell_num-this.cols, size-1);
+            }
+        }
+
+        let new_color = this.averageColors(neighbors);
+
+        // Apply change
+        if (this.data[cell_num] !== new_color) {
+            this.data[cell_num] = new_color;
+            this.changes.push({ cell_num: cell_num, color: new_color });
+        }
+    }
+
+    averageColors(colors) {
+        // Break up each color into rgb pieces and convert those to integers
+        let average = colors.map(color => color.match(/\w\w/g).map(val => parseInt(val, 16)));
+        
+        // Sum up all of the r, g, and b values
+        average = average.reduce((acc, curr_rgb) => {
+            acc[0] += curr_rgb[0];
+            acc[1] += curr_rgb[1];
+            acc[2] += curr_rgb[2];
+            return acc;
+        }, [0, 0, 0]);
+
+        // Divide by total and convert back to strings
+        average = average.map(val => Math.round(val / colors.length).toString(16).padStart(2, '0'));
+
+        return '#' + average[0] + average[1] + average[2];
+    }
+
+        // const [rA, gA, bA] = colorA.match(/\w\w/g).map((c) => parseInt(c, 16));
+        // const [rB, gB, bB] = colorB.match(/\w\w/g).map((c) => parseInt(c, 16));
+        // const r = Math.round(rA + (rB - rA) * amount).toString(16).padStart(2, '0');
+        // const g = Math.round(gA + (gB - gA) * amount).toString(16).padStart(2, '0');
+        // const b = Math.round(bA + (bB - bA) * amount).toString(16).padStart(2, '0');
+        // return '#' + r + g + b;
+
 }

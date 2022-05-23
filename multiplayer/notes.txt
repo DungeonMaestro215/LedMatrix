@@ -12,9 +12,9 @@ Paint:
     X adding buttons for tool
     more tools?
         X colorpicker?
+        blur/blender?
     clean and comment code
 
-    After picking color, reselect the brush tool (?)
     X Fix bug with line from last mouse up
 
 
@@ -22,11 +22,11 @@ MultiPaint:
     Websockets
         Better track ID of user
     Make painting fade
-    add cursors
-        Move some cursor code to View
-        Player's cursor should not have to update through WS (makes it laggy)
-    Updating Grid
-        Don't update with same changes from this client 
+    X add cursors
+        X Move some cursor code to View
+        X Player's cursor should not have to update through WS (makes it laggy)
+    X Updating Grid
+        X Don't update with same changes from this client 
         Wait to send changes... somehow (on 'stop' or after a certain number of changes?)
     
 
