@@ -1,7 +1,9 @@
 Mix colors
 
 Paint:
-    Performance issues with many cells in grid
+    Calculate cell width and height once?
+
+    X Performance issues with many cells in grid
 
     X Variable size
     X bucket

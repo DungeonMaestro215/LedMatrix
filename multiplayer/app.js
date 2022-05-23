@@ -61,15 +61,16 @@ ws.on('connection', (socket) => {
   // Generate user data
   let protocol = socket.protocol;
   let id = getNewID(clients);
-  let color = Math.floor(Math.random()*16777215).toString(16);  // Random number 0-16^6 (0-ffffff)
-  color = '0'.repeat(6 - color.length) + color;   // Pad with 0's
+  // let color = Math.floor(Math.random()*16777215).toString(16);  // Random number 0-16^6 (0-ffffff)
+  let hue_rotate = Math.floor(Math.random()*360);
+  // color = '0'.repeat(6 - color.length) + color;   // Pad with 0's
 
   // let connectionMessage = { type: "id", id: id, color: color };
   // socket.send(JSON.stringify(connectionMessage));
   // console.log("connection info sent!");
   // console.log(JSON.stringify(connectionMessage));
 
-  let userdata = { protocol, id, color };
+  let userdata = { protocol, id, hue_rotate };
 
   clients.set(socket, userdata);
   console.log(`user ${id} connected`);
@@ -81,7 +82,7 @@ ws.on('connection', (socket) => {
 
     // Add identifying info
     message.sender = userdata.id;
-    message.color = userdata.color;
+    message.hue_rotate = userdata.hue_rotate;
     const outbound = JSON.stringify(message);
 
     // Client will send an initial message to recieve their id
@@ -105,7 +106,7 @@ ws.on('connection', (socket) => {
     let message = { type: 'delete' };
     // Add identifying info
     message.sender = userdata.id;
-    message.color = userdata.color;
+    message.hue_rotate = userdata.hue_rotate;
     const outbound = JSON.stringify(message);
 
     [...clients.entries()].forEach((client_data) => {

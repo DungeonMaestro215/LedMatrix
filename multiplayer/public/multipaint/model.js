@@ -30,6 +30,7 @@ class Model {
     getLast() {
         return this.last;
     }
+
     setLast(last) {
         this.last = last;
     }
@@ -42,6 +43,7 @@ class Model {
     updateFromChanges(changes) {
         changes.forEach(change => {
             this.data[change.cell_num] = change.color;
+            this.changes.push({ cell_num: change.cell_num, color: change.color });
         });
     }
 
@@ -52,9 +54,12 @@ class Model {
         if (cell_num < 0 || cell_num > this.data.length) {
             return;
         }
-        
-        this.data[cell_num] = color;
-        this.changes.push({ cell_num: cell_num, color: color });
+
+        // Is there any actual change?
+        if (this.data[cell_num] !== color) {
+            this.data[cell_num] = color;
+            this.changes.push({ cell_num: cell_num, color: color });
+        }
 
         // Recursivel color around the cell
         // Also obey the boundaries of the box
@@ -174,6 +179,7 @@ class Model {
         }
 
         this.data[cell_num] = new_color;
+        this.changes.push({ cell_num: cell_num, color: new_color });
 
         if (cell_num % this.cols !== this.cols-1) {
             this.floodFill(cell_num+1, old_color, new_color);

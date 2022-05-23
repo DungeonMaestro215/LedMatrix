@@ -20,6 +20,7 @@
     font-family: 'Courier New Bold';
     font-size: 1.5rem;
     color: var(--color-text);
+    cursor: none;
 }
 
 html, body {
@@ -38,6 +39,9 @@ html, body {
     align-items: center;
 }
 
+.multipaint {
+}
+
 .break {
     flex-basis: 100%;
     height: 0;
@@ -50,11 +54,11 @@ html, body {
     justify-content: center;
 }
 
-#grid {
+/* #grid {
     border: 1px black solid;
-    /* cursor: url('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/313/paintbrush_1f58c-fe0f.png') 0 100, auto; */
+    cursor: url('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/313/paintbrush_1f58c-fe0f.png') 0 100, auto;
     cursor: url(images/mybrush.png) 0 32, auto;
-}
+} */
 
 #grid-canvas {
     background-color: white;
@@ -94,8 +98,8 @@ img {
     position: absolute;
     top: 0;
     left: 0;
-    width: 70px;
-    height: 70px;
+    width: 30px;
+    height: 30px;
     pointer-events: none;
     transition: all ease;
 }

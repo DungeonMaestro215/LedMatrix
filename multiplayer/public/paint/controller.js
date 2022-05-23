@@ -12,7 +12,6 @@ class Controller {
         this.view = view;
 
         view.addListener((e) => this.handleEvent(e));
-        console.log(this.model.getData());
         this.view.colorAll(this.model.getData());
     }
 

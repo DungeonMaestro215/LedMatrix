@@ -11,7 +11,7 @@ class Controller {
         this.model = model;
         this.view = view;
         this.setupWS();
-        this.id = null;
+        // this.id = null;
         // this.ws = await this.connectToServer();
         // ws.onmessage = this.onMessage;
         // window.onbeforeunload = () => this.ws.close();
@@ -25,7 +25,7 @@ class Controller {
         this.ws = await this.connectToServer();
         this.ws.onmessage = this.onMessage;
         this.ws.send(JSON.stringify({ type: "initial" }));
-        window.onbeforeunload = () => this.ws.close();
+        window.onbeforeunload = () => this.ws.close();      // ?
     }
 
     // Given an event, what should happen?
@@ -43,24 +43,27 @@ class Controller {
     }
 
     // Clear the model and update the view
-    handleClear = (e) => {
+    handleClear = () => {
         this.model.colorAll('#ffffff');
         this.view.colorAll(this.model.getData());
+        this.ws.send(JSON.stringify({ type: "clear" }));
     }
 
     // Paint the cell and any neighbors, then update the view
     handleBrush = (e) => {
         if (e.type === 'click') {
+            console.log(e.cell_num);
             this.model.colorCell(e.cell_num, e.color, e.size);
             this.model.setLast(e.cell_num);
-            this.view.colorAll(this.model.getData());
+            this.view.colorSome(this.model.getChanges());
             // this.ws.send(JSON.stringify({ type: "click", data: { cell_num: e.cell_num, color: e.color, size: e.size } }));
             this.ws.send(JSON.stringify({ type: "paint", changes: this.model.getChanges() }));
             this.model.clearChanges();
         } else if (e.type === 'drag') {
+            console.log(e.cell_num);
             this.model.line(this.model.getLast(), e.cell_num, e.color, e.size);
             this.model.setLast(e.cell_num);
-            this.view.colorAll(this.model.getData());
+            this.view.colorSome(this.model.getChanges());
             // this.ws.send(JSON.stringify({ type: "drag", data: { cell_num: e.cell_num, last: this.model.getLast(), color: e.color, size: e.size } }));
             this.ws.send(JSON.stringify({ type: "paint", changes: this.model.getChanges() }));
             this.model.clearChanges();
@@ -72,15 +75,19 @@ class Controller {
     // Floodfill the model, the update the view
     handleBucket = (e) => {
         this.model.fill(e.cell_num, e.color);
-        this.view.colorAll(this.model.getData());
+        this.view.colorSome(this.model.getChanges());
+        this.ws.send(JSON.stringify({ type: "paint", changes: this.model.getChanges() }));
+        this.model.clearChanges();
     }
 
     handleDropper = (e) => {
-        // console.log(e.cell_num);
-        // console.log(this.model.getData()[e.cell_num]);
         let color = this.model.getData()[e.cell_num];
         let button = e.button;
         this.view.setColor(color, button);
+    }
+
+    handleCursor = (e) => {
+        this.ws.send(JSON.stringify(e.message));
     }
 
     handleTest = (e) => {
@@ -88,8 +95,8 @@ class Controller {
     }
     
     async connectToServer() {
-        const ws = new WebSocket('ws://afternoon-plateau-82522.herokuapp.com/:3000', 'cursors');
-        // const ws = new WebSocket('ws://localhost:3000', 'paint');
+        // const ws = new WebSocket('ws://afternoon-plateau-82522.herokuapp.com/:3000', 'cursors');
+        const ws = new WebSocket('ws://localhost:3000', 'paint');
 
         return new Promise((resolve, reject) => {
             const timer = setInterval(() => {
@@ -109,7 +116,7 @@ class Controller {
         if (messageBody.type === "initial") {
             console.log(messageBody);
             this.view.setId(messageBody.sender);
-            this.view.setCursorColor(messageBody.color);
+            this.view.setCursorHueRotate(messageBody.hue_rotate);
         }
 
         if (messageBody.type === 'delete') {
@@ -117,8 +124,12 @@ class Controller {
             return;
         }
 
-        if (messageBody.type === "cursor" && messageBody.sender != this.view.id) {
-            this.view.moveCursor(messageBody.sender, messageBody.name, messageBody.color, messageBody.x, messageBody.y);
+        if (messageBody.type === "cursor" && messageBody.sender != this.view.getId()) {
+            this.view.moveCursor(messageBody.sender, messageBody.name, messageBody.hue_rotate, messageBody.tool, messageBody.x, messageBody.y);
+        }
+
+        if (messageBody.type === "cursorimg" && messageBody.sender != this.view.getId()) {
+            this.view.updateCursorImage(messageBody.sender, `my${messageBody.tool}.png`);
         }
 
         // if (messageBody.type === "click") {
@@ -132,17 +143,17 @@ class Controller {
         // }
 
         // if (messageBody.type === "paint") {
-        if (messageBody.type === "paint" && messageBody.sender != this.view.id) {
-            // console.log(messageBody.sender);
-            // console.log(this.view.getId());
-            let changes = messageBody.changes;
+        if (messageBody.type === "paint" && messageBody.sender != this.view.getId()) {
+            const changes = messageBody.changes;
             this.model.updateFromChanges(changes);
+            this.view.colorSome(this.model.getChanges());
+            this.model.clearChanges();
+        }
+
+        if (messageBody.type === "clear") {
+            this.model.colorAll('#ffffff');
             this.view.colorAll(this.model.getData());
         }
     }
 
-    handleCursor = (e) => {
-        // console.log(e);
-        this.ws.send(JSON.stringify(e.message));
-    }
 }

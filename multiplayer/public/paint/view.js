@@ -137,7 +137,7 @@ class View {
 
         const clamp = (num, min, max) => Math.max(Math.min(num, max), min);
 
-        const cell_num = this.getCellFromCoords(clamp(e.offsetX, 0, this.gridsize-1), clamp(e.offsetY, 0, this.gridsize-1));
+        const cell_num = this.getCellFromCoords(clamp(e.offsetX, 0, this.gridsize-1), clamp(e.offsetY, 0, this.gridsize));
         const button = e.buttons;
         const color = document.getElementById(`colorpicker${button}`).value;
         const size = document.getElementById('brushsize').value;
@@ -153,7 +153,7 @@ class View {
         const row = Math.floor(x / this.canvas.width * this.rows);
         const col = Math.floor(y / this.canvas.height * this.cols);
 
-        console.log(x, y, row, col);
+        // console.log(x, y, row, col);
 
         let cell_num = row + this.rows * col;
         

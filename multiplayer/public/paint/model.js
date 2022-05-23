@@ -9,7 +9,7 @@ class Model {
         this.data = [];
         this.colorAll('#ffffff');
         this.listeners = [];
-        this.last = 0;
+        this.last = null;
         this.changes = [];
     }
 
@@ -30,6 +30,7 @@ class Model {
     getLast() {
         return this.last;
     }
+    
     setLast(last) {
         this.last = last;
     }
