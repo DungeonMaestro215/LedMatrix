@@ -333,11 +333,6 @@ class Model {
 
         const snapshot = [...this.data];
         console.log(speedX, speedY);
-
-        const ratio = Math.max(Math.abs(speedX+accelX), Math.abs(speedY+accelY));
-        console.log(ratio);
-        speedX = (speedX+accelX) / ratio;
-        speedY = (speedY+accelY) / ratio;
         
         // Spawn ball
         // console.log("ball");
@@ -348,9 +343,9 @@ class Model {
             this.colorCell(cell_num, color, size, snapshot);
             const new_cell_num = cell_num + Math.round(speedX) + Math.round(speedY)*this.cols;
             // console.log(cell_num, new_cell_num);
-            this.throwBall(new_cell_num, color, size, speedX, speedY, accelX, accelY);
+            this.throwBall(new_cell_num, color, size, speedX+accelX, speedY+accelY, accelX, accelY);
             this.updateListeners({ tool: "update" });
-        }, 20 / ratio);
+        }, 20);
     }
 
     fireworks(cell_num, color) {
