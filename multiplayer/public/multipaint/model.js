@@ -13,6 +13,25 @@ class Model {
         this.changes = [];
     }
 
+    // Uses listeners to update the controller of events
+    addListener(listener) {
+        const idx = this.listeners.findIndex((l) => l === listener);
+        if (idx === -1) {
+            this.listeners.push(listener);
+        }
+    }
+
+    removeListener(listener) {
+        const idx = this.listeners.findIndex((l) => l === listener);
+        if (idx != -1) {
+            this.listeners.splice(idx, 1);
+        }
+    }
+
+    updateListeners(e) {
+        this.listeners.forEach((l) => l(e));
+    }
+
     // Send back the data
     getData() {
         return this.data;
@@ -181,15 +200,19 @@ class Model {
         this.data[cell_num] = new_color;
         this.changes.push({ cell_num: cell_num, color: new_color });
 
-        if (cell_num % this.cols !== this.cols-1) {
-            this.floodFill(cell_num+1, old_color, new_color);
-        }
+        setTimeout(() => {
+            if (cell_num % this.cols !== this.cols-1) {
+                this.floodFill(cell_num+1, old_color, new_color);
+            }
         
-        if (cell_num % this.cols !== 0) {
-            this.floodFill(cell_num-1, old_color, new_color);
-        }
-        this.floodFill(cell_num+this.cols, old_color, new_color);
-        this.floodFill(cell_num-this.cols, old_color, new_color);
+            if (cell_num % this.cols !== 0) {
+                this.floodFill(cell_num-1, old_color, new_color);
+            }
+            this.floodFill(cell_num+this.cols, old_color, new_color);
+            this.floodFill(cell_num-this.cols, old_color, new_color);
+
+            this.updateListeners({ tool: "update" });
+        }, 40);
     }
 
     oldfloodFill(cell_num, old_color, new_color) {

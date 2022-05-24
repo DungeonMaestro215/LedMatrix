@@ -194,12 +194,15 @@ class View {
         e.preventDefault();
         // console.log(e.type);
 
+        // console.log(e);
+
         if (e.target.id !== "grid-canvas") return;
         if (e.buttons === 0) return;
 
         // Get the cell clicked
         const clamp = (num, min, max) => Math.max(Math.min(num, max), min);
         const cell_num = this.getCellFromCoords(clamp(e.offsetX, 0, this.gridsize-1), clamp(e.offsetY, 0, this.gridsize-1));
+
 
         const button = e.buttons;
 
@@ -228,6 +231,15 @@ class View {
             let color2 = document.getElementById(`colorpicker2`).value;
             color = this.blendColors(color1, color2, 0.5);
         }
+        
+        let prev_color = this.ctx.getImageData(e.offsetX, e.offsetY, 1, 1).data;
+        const r = prev_color[0].toString(16).padStart(2, '0');
+        const g = prev_color[1].toString(16).padStart(2, '0');
+        const b = prev_color[2].toString(16).padStart(2, '0');
+        prev_color = '#' + r + g + b;
+        // console.log(prev_color, color);
+        if (color === prev_color) return;
+        console.log(cell_num);
 
         // Fixes one of the two main colors covering mixed color when button released
 

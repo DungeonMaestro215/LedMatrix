@@ -17,6 +17,7 @@ class Controller {
         // window.onbeforeunload = () => this.ws.close();
 
         view.addListener((e) => this.handleEvent(e));
+        model.addListener((e) => this.handleEvent(e));
         this.view.colorAll(this.model.getData());
     }
 
@@ -38,6 +39,7 @@ class Controller {
             dropper: this.handleDropper,
             cursor: this.handleCursor,
             blur: this.handleBlur,
+            update: this.handleUpdate,
         }
 
         event_list[e.tool](e);
@@ -48,6 +50,12 @@ class Controller {
         this.model.colorAll('#ffffff');
         this.view.colorAll(this.model.getData());
         this.ws.send(JSON.stringify({ type: "clear" }));
+    }
+
+    handleUpdate = () => {
+        this.view.colorSome(this.model.getChanges());
+        this.ws.send(JSON.stringify({ type: "paint", changes: this.model.getChanges() }));
+        this.model.clearChanges();
     }
 
     // Paint the cell and any neighbors, then update the view
