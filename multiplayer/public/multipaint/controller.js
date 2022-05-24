@@ -15,6 +15,7 @@ class Controller {
         // this.ws = await this.connectToServer();
         // ws.onmessage = this.onMessage;
         // window.onbeforeunload = () => this.ws.close();
+        this.prev_mouse_event = null;
 
         view.addListener((e) => this.handleEvent(e));
         model.addListener((e) => this.handleEvent(e));
@@ -76,7 +77,7 @@ class Controller {
             // this.ws.send(JSON.stringify({ type: "drag", data: { cell_num: e.cell_num, last: this.model.getLast(), color: e.color, size: e.size } }));
             this.ws.send(JSON.stringify({ type: "paint", changes: this.model.getChanges() }));
             this.model.clearChanges();
-        } else if (e.type === 'stop') {
+        } else if (e.type === 'stop' || e.type === 'release') {
             this.model.setLast(null);
         }
     }
@@ -109,9 +110,16 @@ class Controller {
     }
 
     handleBall = (e) => {
-        if (e.type === 'stop') return;
+        if (e.type === 'click') return;
+        if (e.type === 'drag') {
+            this.prev_mouse_event = e.event;
+            return;
+        }
 
-        this.model.throwBall(e.cell_num, e.size);
+        // console.log(e);
+        // console.log(this.prev_mouse_event.movementX, this.prev_mouse_event.movementY);
+
+        this.model.throwBall(e.cell_num, e.color, e.size, this.prev_mouse_event.movementX, this.prev_mouse_event.movementY, 0, 0.05);
         this.view.colorSome(this.model.getChanges());
         this.ws.send(JSON.stringify({ type: "paint", changes: this.model.getChanges() }));
         this.model.clearChanges();
@@ -119,8 +127,10 @@ class Controller {
 
 
     handleFireworks = (e) => {
-        if (e.type === 'stop') return;
-        if (e.type === 'drag') return;
+        // if (e.type === 'stop') return;
+        // if (e.type === 'drag') return;
+        // if (e.type === 'release') return;
+        if (e.type !== 'click') return;
 
         this.model.fireworks(e.cell_num, e.color);
         this.view.colorSome(this.model.getChanges());

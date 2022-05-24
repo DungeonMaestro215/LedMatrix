@@ -68,16 +68,16 @@ class Model {
 
     // Handle painting a cell
     // Larger brush sizes will recursively call this
-    colorCell(cell_num, color, size=1) {
+    colorCell(cell_num, color, size=1, snapshot=null) {
         // OOB?
         if (cell_num < 0 || cell_num > this.data.length) {
             return;
         }
 
         // Is there any actual change?
-        if (this.data[cell_num] !== color) {
-            this.data[cell_num] = color;
-            this.changes.push({ cell_num: cell_num, color: color });
+        if (this.data[cell_num] !== (snapshot ? snapshot[cell_num] : color)) {
+            this.data[cell_num] = snapshot ? snapshot[cell_num] : color;
+            this.changes.push({ cell_num: cell_num, color: snapshot ? snapshot[cell_num] : color });
         }
 
         // Recursively color around the cell
@@ -86,15 +86,15 @@ class Model {
             return;
         } else {
             if (cell_num % this.cols !== this.cols-1) {
-                this.colorCell(cell_num+1, color, size-1);
+                this.colorCell(cell_num+1, color, size-1, snapshot);
             }
 
             if (cell_num % this.cols !== 0) {
-                this.colorCell(cell_num-1, color, size-1);
+                this.colorCell(cell_num-1, color, size-1, snapshot);
             }
 
-            this.colorCell(cell_num+this.cols, color, size-1);
-            this.colorCell(cell_num-this.cols, color, size-1);
+            this.colorCell(cell_num+this.cols, color, size-1, snapshot);
+            this.colorCell(cell_num-this.cols, color, size-1, snapshot);
         }
     }
 
@@ -327,8 +327,30 @@ class Model {
         return '#' + average[0] + average[1] + average[2];
     }
 
-    throwBall() {
-        console.log("ball");
+    throwBall(cell_num, color, size, speedX, speedY, accelX, accelY) {
+        if (cell_num >= this.rows*this.cols || cell_num < 0) speedY = -.7*speedY;
+        if (cell_num % this.cols + speedX >= this.cols || (cell_num % this.cols + speedX < 0 && cell_num >= 0)) speedX = -0.7*speedX;
+
+        const snapshot = [...this.data];
+        console.log(speedX, speedY);
+
+        const ratio = Math.max(Math.abs(speedX+accelX), Math.abs(speedY+accelY));
+        console.log(ratio);
+        speedX = (speedX+accelX) / ratio;
+        speedY = (speedY+accelY) / ratio;
+        
+        // Spawn ball
+        // console.log("ball");
+        this.colorCell(cell_num, color, size);
+
+        // Move the ball
+        setTimeout(() => {
+            this.colorCell(cell_num, color, size, snapshot);
+            const new_cell_num = cell_num + Math.round(speedX) + Math.round(speedY)*this.cols;
+            // console.log(cell_num, new_cell_num);
+            this.throwBall(new_cell_num, color, size, speedX, speedY, accelX, accelY);
+            this.updateListeners({ tool: "update" });
+        }, 20 / ratio);
     }
 
     fireworks(cell_num, color) {
@@ -368,7 +390,7 @@ class Model {
             this.colorCell(start, snapshot[start]);
             this.updateListeners({ tool: "update" });
 
-            color = this.blendColors(this.randomColor(), snapshot[start], 1-intensity**0.8);
+            color = this.blendColors(this.randomColor(), snapshot[start], 1-intensity**0.4);
 
             this.recursiveExplosion(start + 1, 
                                     color, 

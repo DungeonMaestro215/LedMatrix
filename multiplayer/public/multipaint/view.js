@@ -99,7 +99,7 @@ class View {
 
         canvas.addEventListener('pointerdown', (e) => this.handlePainting(e));
         canvas.addEventListener('pointermove', (e) => this.handlePainting(e));
-        canvas.addEventListener('pointerup', () => this.stopPainting());
+        canvas.addEventListener('pointerup', (e) => this.handlePainting(e));
         canvas.addEventListener('pointerleave', () => this.stopPainting());
 
         return [canvas, ctx];
@@ -197,7 +197,7 @@ class View {
         // console.log(e);
 
         if (e.target.id !== "grid-canvas") return;
-        if (e.buttons === 0) return;
+        if (e.type !== 'pointerup' && e.buttons === 0) return;
 
         // Get the cell clicked
         const clamp = (num, min, max) => Math.max(Math.min(num, max), min);
@@ -215,7 +215,7 @@ class View {
                 return;
             }
             type = 'drag';
-        };
+        } else if (e.type === 'pointerup') type = 'release';
         this.last_cell = cell_num;
 
         // Different button options
@@ -225,6 +225,8 @@ class View {
         } else if (button === 4) {
             // Random button for middle mouse
             color = this.randomColor();
+        } else if (button === 0) {
+            color = document.getElementById(`colorpicker${this.last_button}`).value;
         } else {
             // Mix Colors with both clicked (button 3)
             let color1 = document.getElementById(`colorpicker1`).value;
@@ -244,7 +246,7 @@ class View {
 
         // const color = document.getElementById(`colorpicker1`).value;
         const size = document.getElementById('brushsize').value;
-        this.updateListeners({ tool: this.tool, type: type, cell_num: cell_num, color: color, size: size, button: button });
+        this.updateListeners({ tool: this.tool, type: type, cell_num: cell_num, color: color, size: size, button: button, event: e });
     }
 
     stopPainting() {
