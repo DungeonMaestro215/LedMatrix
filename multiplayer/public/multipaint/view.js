@@ -232,22 +232,14 @@ class View {
             color = this.blendColors(color1, color2, 0.5);
         }
         
-        let prev_color = this.ctx.getImageData(e.offsetX, e.offsetY, 1, 1).data;
-        const r = prev_color[0].toString(16).padStart(2, '0');
-        const g = prev_color[1].toString(16).padStart(2, '0');
-        const b = prev_color[2].toString(16).padStart(2, '0');
-        prev_color = '#' + r + g + b;
-        // console.log(prev_color, color);
-        if (color === prev_color) return;
-        console.log(cell_num);
+        // // Don't recolor cell if unnecessary
+        // let prev_color = this.ctx.getImageData(e.offsetX, e.offsetY, 1, 1).data;
+        // const r = prev_color[0].toString(16).padStart(2, '0');
+        // const g = prev_color[1].toString(16).padStart(2, '0');
+        // const b = prev_color[2].toString(16).padStart(2, '0');
+        // prev_color = '#' + r + g + b;
+        // if (color === prev_color) return;
 
-        // Fixes one of the two main colors covering mixed color when button released
-
-        // console.log(this.last_button, button, type, e);
-        // if (this.last_button === 3 && button !== 3 && button !== 0) {
-        //     this.stopPainting();
-        //     return
-        // }
         this.last_button = button;
 
         // const color = document.getElementById(`colorpicker1`).value;

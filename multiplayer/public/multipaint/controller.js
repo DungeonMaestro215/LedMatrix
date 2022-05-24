@@ -40,6 +40,8 @@ class Controller {
             cursor: this.handleCursor,
             blur: this.handleBlur,
             update: this.handleUpdate,
+            ball: this.handleBall,
+            fireworks: this.handleFireworks,
         }
 
         event_list[e.tool](e);
@@ -105,6 +107,27 @@ class Controller {
         this.ws.send(JSON.stringify({ type: "paint", changes: this.model.getChanges() }));
         this.model.clearChanges();
     }
+
+    handleBall = (e) => {
+        if (e.type === 'stop') return;
+
+        this.model.throwBall(e.cell_num, e.size);
+        this.view.colorSome(this.model.getChanges());
+        this.ws.send(JSON.stringify({ type: "paint", changes: this.model.getChanges() }));
+        this.model.clearChanges();
+    }
+
+
+    handleFireworks = (e) => {
+        if (e.type === 'stop') return;
+        if (e.type === 'drag') return;
+
+        this.model.fireworks(e.cell_num, e.color);
+        this.view.colorSome(this.model.getChanges());
+        this.ws.send(JSON.stringify({ type: "paint", changes: this.model.getChanges() }));
+        this.model.clearChanges();
+    }
+
 
     handleTest = (e) => {
         console.log('Ladies and gentlemen');
