@@ -385,7 +385,10 @@ class Model {
             this.colorCell(start, snapshot[start]);
             this.updateListeners({ tool: "update" });
 
-            color = this.blendColors(this.randomColor(), snapshot[start], 1-intensity**0.4);
+            let rand_color = this.randomColor();
+            while (this.colorDist(rand_color, snapshot[start]) < 220) rand_color = this.randomColor();
+
+            color = this.blendColors(rand_color, snapshot[start], 1-intensity**0.4);
 
             this.recursiveExplosion(start + 1, 
                                     color, 
@@ -448,9 +451,16 @@ class Model {
     }
 
     randomColor() {
-        let color = Math.floor(Math.random()*16777215).toString(16);  // Random number 0-16^6 (0-ffffff)
-        color = '#' + '0'.repeat(6 - color.length) + color;   // Pad with 0's
+        const color = Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');  // Random number 0-16^6 (0-ffffff)
         return color;
+    }
+
+    colorDist(colorA, colorB) {
+        const [rA, gA, bA] = colorA.match(/\w\w/g).map((c) => parseInt(c, 16));
+        const [rB, gB, bB] = colorB.match(/\w\w/g).map((c) => parseInt(c, 16));
+
+        // console.log(Math.sqrt((rA - rB)**2 + (gA - gB)**2 + (bA - bB)**2));
+        return Math.sqrt((rA - rB)**2 + (gA - gB)**2 + (bA - bB)**2);
     }
 
     // blend two hex colors together by an amount
