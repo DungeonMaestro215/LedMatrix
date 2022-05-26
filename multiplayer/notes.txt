@@ -1,7 +1,20 @@
-Mix colors
+Misc:
+    Dot animation with lines between close dots
+    Circles that collide and mold
 
 Paint:
     Calculate cell width and height once?
+    Better Fill algo
+        Maybe some dynamic programming (might fix flashing problem)
+        Data structure over recursion
+    Better Line algo
+        Maybe fill an array, then work through it one by one, instead of many setTimeouts at once, they cascade
+    Animation Layer
+    Better handling animation frames (each animation should not be responsible for its own updates)
+    Make server handle animations?
+    Fix ball bouncing
+    Bug with paintbrush being disconnected on multiplayer
+
 
     X Performance issues with many cells in grid
 
@@ -12,7 +25,7 @@ Paint:
     X adding buttons for tool
     more tools?
         X colorpicker?
-        blur/blender?
+        X blur/blender?
     clean and comment code
 
     X Fix bug with line from last mouse up
