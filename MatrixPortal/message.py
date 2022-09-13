@@ -7,7 +7,8 @@ import terminalio
 from adafruit_matrixportal.matrixportal import MatrixPortal
 
 # Message app website
-URL="http://afternoon-plateau-82522.herokuapp.com/message/messageget"
+# URL="http://afternoon-plateau-82522.herokuapp.com/message/messageget"
+URL="http://dennysprojects.herokuapp.com/multipaint/"
 
 # Display setup
 matrixportal = MatrixPortal(

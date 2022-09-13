@@ -33,7 +33,8 @@ window.onload = function () {
 
         axios({
             method: 'post',
-            url: 'https://afternoon-plateau-82522.herokuapp.com/message/messagepost',
+            // url: 'https://afternoon-plateau-82522.herokuapp.com/message/messagepost',
+            url: 'https://dennysprojects.herokuapp.com/message/messagepost',
             // url: 'http://localhost:3000/message/messagepost',
             data: {
                 message: message,

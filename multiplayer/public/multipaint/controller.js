@@ -144,7 +144,8 @@ class Controller {
     }
     
     async connectToServer() {
-        const ws = new WebSocket('ws://afternoon-plateau-82522.herokuapp.com/:3000', 'multipaint');
+        // const ws = new WebSocket('ws://afternoon-plateau-82522.herokuapp.com/:3000', 'multipaint');
+        const ws = new WebSocket('ws://dennysprojects.herokuapp.com/:3000', 'multipaint');
         // const ws = new WebSocket('ws://localhost:3000', 'paint');
 
         return new Promise((resolve, reject) => {
