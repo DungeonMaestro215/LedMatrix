@@ -9,7 +9,11 @@ class Model {
         this.data = [];
         this.colorAll('#ffffff');
         this.listeners = [];
+<<<<<<< HEAD
         this.last = 0;
+=======
+        this.last = null;
+>>>>>>> 8296ac15860ce458c7b43d0c5983df759f4d0b1b
         this.changes = [];
     }
 
@@ -30,6 +34,7 @@ class Model {
     getLast() {
         return this.last;
     }
+    
     setLast(last) {
         this.last = last;
     }
@@ -174,6 +179,7 @@ class Model {
         }
 
         this.data[cell_num] = new_color;
+        this.changes.push({ cell_num: cell_num, color: new_color });
 
         if (cell_num % this.cols !== this.cols-1) {
             this.floodFill(cell_num+1, old_color, new_color);

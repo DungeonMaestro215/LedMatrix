@@ -14,19 +14,7 @@
 
 <body>
     <div id="main">
-        <!-- <div id="grid-wrapper"> -->
-            <canvas id="grid-canvas"></canvas>
-            <!-- <div id="grid"> -->
-            <!-- <div class="row">
-                    <div class="cell"></div>
-                    <div class="cell"></div>
-                </div>
-                <div class="row">
-                    <div class="cell"></div>
-                    <div class="cell"></div>
-                </div> -->
-            <!-- </div> -->
-        <!-- </div> -->
+        <canvas id="grid-canvas"></canvas>
 
         <div id="settings-wrapper">
             <div id="name-wrapper" class="transparent">
@@ -34,10 +22,11 @@
                 <input id="name" class="transparent" type="text" name="name">
             </div>
 
-            <label for="colorpicker1" id="colorpicker1-label">Left Click Color:</label>
+            <label for="colorpicker1" id="colorpicker1-label">Primary Color:</label>
             <input type="color" id="colorpicker1" value="#000000">
-            <label for="colorpicker2" id="colorpicker2-label">Right Click Color:</label>
+            <label for="colorpicker2" id="colorpicker2-label">Secondary Color:</label>
             <input type="color" id="colorpicker2" value="#ffffff">
+            <button class="defaultButton" id="swap">Swap</button>
 
             <div id="tools-wrapper">
                 <label for="brush" id="brush-label"><img src="../images/mybrush.png"></label>
@@ -70,7 +59,6 @@
     <script src="model.js"></script>
     <script src="view.js"></script>
     <script src="controller.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.0/axios.min.js"></script> -->
 </body>
 
 </html>

@@ -17,7 +17,7 @@
 }
 
 * {
-    font-family: 'Comic Neue', cursive;
+    font-family: 'Courier New Bold';
     font-size: 1.5rem;
     color: var(--color-text);
 }
@@ -26,6 +26,7 @@ html, body {
     margin: 0;
     height: 100vh;
     background-color: var(--color-background);
+    overflow: hidden;
 }
 
 #main {
@@ -36,6 +37,10 @@ html, body {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+}
+
+.multipaint {
+    cursor: none;
 }
 
 .break {
@@ -50,17 +55,22 @@ html, body {
     justify-content: center;
 }
 
-#grid {
+/* #grid {
     border: 1px black solid;
-    /* cursor: url('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/313/paintbrush_1f58c-fe0f.png') 0 100, auto; */
+    cursor: url('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/313/paintbrush_1f58c-fe0f.png') 0 100, auto;
     cursor: url(images/mybrush.png) 0 32, auto;
-}
+} */
 
 #grid-canvas {
     background-color: white;
+<<<<<<< HEAD
     border: 1px black solid;
     /* height: 300px;
     width: 300px; */
+=======
+    touch-action: none;
+    /* border: 1px black solid; */
+>>>>>>> 8296ac15860ce458c7b43d0c5983df759f4d0b1b
     /* cursor: url('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/313/paintbrush_1f58c-fe0f.png') 0 100, auto; */
     /* cursor: url(images/mybrush.png) 0 32, auto; */
 }
@@ -79,6 +89,7 @@ html, body {
 }
 
 #settings-wrapper {
+    max-width: 90%;
     padding: 10px;
 }
 
@@ -94,8 +105,8 @@ img {
     position: absolute;
     top: 0;
     left: 0;
-    width: 70px;
-    height: 70px;
+    width: 30px;
+    height: 30px;
     pointer-events: none;
     transition: all ease;
 }
@@ -116,15 +127,6 @@ img {
     background-color: darkblue;
 } */
 
-/* mobile stuff */
-@media (max-width: 500px) {
-    #grid-wrapper {
-        height: 322px;
-    }
-
-    .cell {
-        width: 5px;
-        height: 5px;
-    }
-
+#name {
+    max-width: 90%;
 }

@@ -1,6 +1,23 @@
-Mix colors
+Misc:
+    Dot animation with lines between close dots
+    Circles that collide and mold
 
 Paint:
+    Calculate cell width and height once?
+    Better Fill algo
+        Maybe some dynamic programming (might fix flashing problem)
+        Data structure over recursion
+    Better Line algo
+        Maybe fill an array, then work through it one by one, instead of many setTimeouts at once, they cascade
+    Animation Layer
+    Better handling animation frames (each animation should not be responsible for its own updates)
+    Make server handle animations?
+    Fix ball bouncing
+    Bug with paintbrush being disconnected on multiplayer
+
+
+    X Performance issues with many cells in grid
+
     X Variable size
     X bucket
     X make work on mobile
@@ -8,9 +25,9 @@ Paint:
     X adding buttons for tool
     more tools?
         X colorpicker?
+        X blur/blender?
     clean and comment code
 
-    After picking color, reselect the brush tool (?)
     X Fix bug with line from last mouse up
 
 
@@ -18,11 +35,11 @@ MultiPaint:
     Websockets
         Better track ID of user
     Make painting fade
-    add cursors
-        Move some cursor code to View
-        Player's cursor should not have to update through WS (makes it laggy)
-    Updating Grid
-        Don't update with same changes from this client 
+    X add cursors
+        X Move some cursor code to View
+        X Player's cursor should not have to update through WS (makes it laggy)
+    X Updating Grid
+        X Don't update with same changes from this client 
         Wait to send changes... somehow (on 'stop' or after a certain number of changes?)
     
 

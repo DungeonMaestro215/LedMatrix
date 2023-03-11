@@ -1,5 +1,5 @@
 // let model = null;
-let view = null;
+// let view = null;
 // let control = null;
 
 window.onload = () => {
@@ -11,7 +11,4 @@ window.onload = () => {
     const model = new Model(rows, cols);
     view = new View(rows, cols);
     const control = new Controller(model, view);
-
-    // Load into DOM
-    document.getElementById('grid-wrapper').append(view.div);
 };

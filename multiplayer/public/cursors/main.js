@@ -64,7 +64,8 @@ function handleMoveEvent(e, ws) {
 }
 
 async function connectToServer() {
-    const ws = new WebSocket('ws://afternoon-plateau-82522.herokuapp.com/:3000', 'cursors');
+    // const ws = new WebSocket('ws://afternoon-plateau-82522.herokuapp.com/:3000', 'cursors');
+    const ws = new WebSocket('ws://dennysprojects.herokuapp.com/:3000', 'cursors');
     // const ws = new WebSocket('ws://localhost:3000', 'cursors');
     return new Promise((resolve, reject) => {
         const timer = setInterval(() => {

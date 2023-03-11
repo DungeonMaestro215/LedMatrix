@@ -13,19 +13,8 @@
 </head>
 
 <body>
-    <div id="main">
-        <div id="grid-wrapper">
-            <!-- <div id="grid"> -->
-            <!-- <div class="row">
-                    <div class="cell"></div>
-                    <div class="cell"></div>
-                </div>
-                <div class="row">
-                    <div class="cell"></div>
-                    <div class="cell"></div>
-                </div> -->
-            <!-- </div> -->
-        </div>
+    <div id="main" class="multipaint">
+        <canvas id="grid-canvas"></canvas>
 
         <div id="settings-wrapper">
             <div id="name-wrapper" class="transparent">
@@ -33,18 +22,25 @@
                 <input id="name" class="transparent" type="text" name="name">
             </div>
 
-            <label for="colorpicker1" id="colorpicker1-label">Left Click Color:</label>
+            <label for="colorpicker1" id="colorpicker1-label">Primary Color:</label>
             <input type="color" id="colorpicker1" value="#000000">
-            <label for="colorpicker2" id="colorpicker2-label">Right Click Color:</label>
+            <label for="colorpicker2" id="colorpicker2-label">Secondary Color:</label>
             <input type="color" id="colorpicker2" value="#ffffff">
+            <button class="defaultButton" id="swap">Swap</button>
 
             <div id="tools-wrapper">
-                <label for="brush" id="brush-label"><img src="../images/mybrush.png"></label>
-                <input type="radio" id="brush" name="tool" value="brush" checked>
-                <label for="bucket" id="bucket-label"><img src="../images/mybucket.png"></label>
-                <input type="radio" id="bucket" name="tool" value="bucket">
-                <label for="dropper" id="dropper-label"><img src="../images/duck2.png" width="32"></label>
-                <input type="radio" id="dropper" name="tool" value="dropper">
+                <label for="brush" id="brush-label" title="Brush"><img src="../images/mybrush.png"></label>
+                <input type="radio" id="brush" title="Brush" name="tool" value="brush" checked>
+                <label for="bucket" id="bucket-label" title="Bucket"><img src="../images/mybucket2.png"></label>
+                <input type="radio" id="bucket" title="Bucket" name="tool" value="bucket">
+                <label for="dropper" id="dropper-label" title="Dropper"><img src="../images/mydropper2.png"></label>
+                <input type="radio" id="dropper" title="Dropper" name="tool" value="dropper">
+                <label for="blur" id="blur-label" title="Blur"><img src="../images/myblur2.png"></label>
+                <input type="radio" id="blur" title="Blur" name="tool" value="blur">
+                <label for="ball" id="ball-label" title="Ball"><img src="../images/myball2.png"></label>
+                <input type="radio" id="ball" title="Ball" name="tool" value="ball">
+                <label for="fireworks" id="fireworks-label" title="Fireworks"><img src="../images/myfireworks.png"></label>
+                <input type="radio" id="fireworks" title="Fireworks" name="tool" value="fireworks">
             </div>
 
 
@@ -69,7 +65,6 @@
     <script src="model.js"></script>
     <script src="view.js"></script>
     <script src="controller.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.0/axios.min.js"></script> -->
 </body>
 
 </html>

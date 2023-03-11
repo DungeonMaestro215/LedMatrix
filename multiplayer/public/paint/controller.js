@@ -12,7 +12,6 @@ class Controller {
         this.view = view;
 
         view.addListener((e) => this.handleEvent(e));
-        // console.log(this.model.getData());
         this.view.colorAll(this.model.getData());
     }
 
@@ -40,13 +39,19 @@ class Controller {
         if (e.type === 'click') {
             this.model.colorCell(e.cell_num, e.color, e.size);
             this.model.setLast(e.cell_num);
+<<<<<<< HEAD
             // this.view.colorAll(this.model.getData());
+=======
+>>>>>>> 8296ac15860ce458c7b43d0c5983df759f4d0b1b
             this.view.colorSome(this.model.getChanges());
             this.model.clearChanges();
         } else if (e.type === 'drag') {
             this.model.line(this.model.getLast(), e.cell_num, e.color, e.size);
             this.model.setLast(e.cell_num);
+<<<<<<< HEAD
             // this.view.colorAll(this.model.getData());
+=======
+>>>>>>> 8296ac15860ce458c7b43d0c5983df759f4d0b1b
             this.view.colorSome(this.model.getChanges());
             this.model.clearChanges();
         } else if (e.type === 'stop') {
@@ -57,12 +62,11 @@ class Controller {
     // Floodfill the model, the update the view
     handleBucket = (e) => {
         this.model.fill(e.cell_num, e.color);
-        this.view.colorAll(this.model.getData());
+        this.view.colorSome(this.model.getChanges());
+        this.model.clearChanges();
     }
 
     handleDropper = (e) => {
-        // console.log(e.cell_num);
-        // console.log(this.model.getData()[e.cell_num]);
         let color = this.model.getData()[e.cell_num];
         let button = e.button;
         this.view.setColor(color, button);

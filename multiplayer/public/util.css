@@ -1,15 +1,20 @@
 .defaultButton {
-    background-color: var(--color-darkorange);
+    background-color: var(--color-orangeyellow);
     color: var(--color-black);
     padding: .5rem 1rem;
-    box-shadow: 0 0 2px var(--color-accent);
+    box-shadow: 0 0 2px var(--color-black);
     border-radius: 5px;
     transition: .2s ease;
 }
 
 .defaultButton:hover {
-    background-color: var(--color-darkred);
+    background-color: var(--color-orange);
     transition: .2s ease;
+}
+
+.defaultInput {
+    color: var(--color-black);
+    padding: .5rem 1rem;
 }
 
 .absolute {
